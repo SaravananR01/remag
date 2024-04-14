@@ -8,7 +8,7 @@ urlpatterns = [
     path("loginemp", views.emp_login, name="loginemp"),
     path("logincus", views.cus_login, name="logincus"),
     path("signupcompany", views.company_signup, name="signupcompany"),
-    path("signupcus", views.company_login, name="signupcus"),
+    path("signupcus", views.cus_signup, name="signupcus"),
     path("companypage", views.company_page, name="companypage"),
     path("branchpage", views.branch_page, name="branchpage"),
     path("edit-emp", views.edit_emp, name="edit-emp"),
@@ -21,4 +21,7 @@ urlpatterns = [
     path("add-item", views.add_item, name="add-item"),
     path("source-item", views.source_items, name="source-item"),
     path("customer", views.customerpage, name="customer"),
+    path("edit-warehouse", views.edit_warehouse, name="edit-warehouse"),
+    path("store-form",views.changeshop,name="store-form"),
+    path("warehouse-form",views.changewarehouse,name="warehouse-form"),
 ]

@@ -9,11 +9,11 @@ class Company(models.Model):
     c_phone=models.IntegerField(null=False)
     c_address=models.CharField(max_length=200,null=False)
     c_email=models.CharField(null=False,max_length=30)
-    c_password=models.CharField(null=False,max_length=30)
+    c_password=models.CharField(null=False,max_length=100)
 
 
     def save(self, *args, **kwargs):
-        self.password = make_password(self.password)
+        self.c_password = make_password(self.c_password)
         super(Company, self).save(*args, **kwargs)
 
 class Branch(models.Model):
@@ -64,7 +64,7 @@ class Employee(models.Model):
     emp_password=models.CharField(null=False,max_length=30)
 
     def save(self, *args, **kwargs):
-        self.password = make_password(self.password)
+        self.emp_password = make_password(self.emp_password)
         super(Employee, self).save(*args, **kwargs)
 
 # class Departments(models.Model):
@@ -86,7 +86,7 @@ class Customers(models.Model):
 
     
     def save(self, *args, **kwargs):
-        self.password = make_password(self.password)
+        self.cus_password = make_password(self.cus_password)
         super(Customers, self).save(*args, **kwargs)
 
 class Transaction(models.Model):

@@ -1,6 +1,5 @@
-from django.shortcuts import render
-
-
+from django.shortcuts import render,redirect
+from .models import *
 
 def home(request):
     return render(request, "all/home.html",{})
@@ -30,7 +29,10 @@ def edit_emp(request):
     return render(request,"all/edit-employee.html",{})
 
 def edit_shop(request):
-    return render(request,"all/edit-shop-warehouse.html",{})
+    return render(request,"all/edit-shop.html",{})
+
+def edit_warehouse(request):
+    return render(request,"all/edit-warehouse.html",{})
 
 def emp_page(request):
     return render(request,"all/employee-page.html",{})
@@ -55,4 +57,26 @@ def source_items(request):
 
 def customerpage(request):
     return render(request,"all/customer-page.html",{})
+
+def changeshop(request):
+    if request.method == 'POST':
+        s_id = request.POST.get('id')
+        b_id = request.POST.get('b_id')
+        s_admin_id = request.POST.get('admin_id')
+
+        branch = Branch.objects.get(pk=b_id)
+
+        store = Store.objects.create(s_id=s_id, b_id=branch, s_admin_id=s_admin_id)
+    return redirect('/companypage')
+
+def changewarehouse(request):
+    if request.method == 'POST':
+        w_id = request.POST.get('id')
+        b_id = request.POST.get('b_id')
+        w_admin_id = request.POST.get('admin_id')
+
+        branch = Branch.objects.get(pk=b_id)
+
+        warehouse = Warehouse.objects.create(w_id=w_id, b_id=branch, w_admin_id=w_admin_id)
+    return redirect('/companypage')
 
