@@ -1,0 +1,52 @@
+
+<!--Table transaction{
+    t_id varchar [pk]
+    emp_id varchar
+    date_of_transaction date [not null]
+    cus_id varchar [not null]
+    final_cost int [not null]
+}-->
+{% extends "all/base.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+    <div class="container p-5">
+        <div class="container p-2">
+            <button class="btn btn-primary">
+                Looking for a specific item?
+            </button>
+        </div>
+        
+        <table class="table table-info table-stripped">
+            <tr>
+                <th class="col-1">Transaction ID</th>
+                <th class="col">Emp_Id</th>
+                <th class="col">Date of Transaction</th>
+                <th class="col">Cost</th>
+                <th class="col"></th>
+            </tr>
+            <tr>
+                <td>123</td>
+                <td>456</td>
+                <td>1/2/3</td>
+                <td>123123123</td>
+                <td class="text-end">
+                    <a href="/">VIEW</a>
+                </td>
+            </tr>
+            <tr>
+                <td>123</td>
+                <td>456</td>
+                <td>1/2/3</td>
+                <td>123123123</td>
+                <td class="text-end">
+                    <a href="/">VIEW</a>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+{% enblock %}

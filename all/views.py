@@ -19,3 +19,9 @@ def company_signup(request):
 
 def cus_signup(request):
     return render(request, "all/signup-customer.html",{})
+
+def company_page(request):
+    return render(request,"all/company-page.html",{})
+
+def branch_page(request):
+    return render(request,"all/edit-branch.html",{})

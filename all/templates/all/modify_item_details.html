@@ -1,0 +1,81 @@
+{% extends "all/base.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+<body>
+    <div class="container p-5 text-center">
+        <h3 class="p-4">ITEM DETAILS</h3>
+        <form class="row">
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Store ID</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="text" id="s_id" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Product ID</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="text" id="p_id" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Product Name</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="text" id="p_name">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Product Manufacturer</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="text" id="p_manu">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Price</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="text" id="price">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Manufactured Date</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="text" id="m_date">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Expiry Date</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="exp_date">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Quantity</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="text" id="qty">
+                </div>
+            </div>
+            <button class="btn btn-success m-5">SAVE</button>  
+        </form>
+
+    </div>
+
+{% endblock %}
