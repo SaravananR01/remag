@@ -1,0 +1,27 @@
+{% extends "all/base.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+    <h4 class="my-3">Transaction</h4>
+    <button type="button" class="btn btn-primary btn-lg mb-2">Get Customer ID</button>
+    
+    <div class="row">
+        <table class="table table-striped col-md-8 my-5">
+            <tr>
+                <th scope="col-md-1">Item ID</th>
+                <th scope="col-md-2">Item Name Name</th>
+                <th scope="col-md-2">Cost</th>
+                <th scope="col-md-1">Delete</th>
+                <th scope="col-md-1">Modify Quantity</th>
+            </tr>
+        </table>
+    </div>
+
+    <button type="button" class="btn btn-primary btn-sm mb-2">Add Item</button>
+
+    
+{% endblock %}
+        

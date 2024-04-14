@@ -1,0 +1,29 @@
+{% extends "all/base.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+<div>
+    <!--
+        Display Shop Details Here
+    -->
+    <h4 class="my-3">Edit Shop Details</h4>
+    <button type="button" class="btn btn-primary btn-lg mb-2">Edit Shop Details</button>
+    <br>
+    <!-- Display the list of employees-->
+    <h4 class="mt-5">Edit Employee Details</h4>
+    <button type="button" class="btn btn-primary btn-lg  my-3">Add Employee</button>
+    <table class="table table-striped col-md-6">
+        <tr>
+            <th scope="col-1">Emp_ID</th>
+            <th scope="col-2">Employee Name</th>
+            <th scope="col-2">Department</th>
+            <th scope="col-1">Edit</th>
+        </tr>
+    </table>
+</div>    
+
+{% endblock %}
+        

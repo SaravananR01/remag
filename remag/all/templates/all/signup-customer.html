@@ -1,0 +1,38 @@
+{% extends "all/base.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+    <section id="signup-section" class="col-md-4 offset-md-4">
+        <h1>Sign Up!</h1>
+        <form>
+            <div class="mb-3">
+                <label for="customer-name" class="form-label">Enter Your Name</label>
+                <input class="form-control" type="text" placeholder="Name" id="customer-name">
+            </div>
+            <div class="mb-3">
+                <label for="customer-phone" class="form-label">Enter Your Phone No</label>
+                <input class="form-control" type="text" placeholder="Phone No" id="customer-phone">
+            </div>
+            <div class="mb-3">
+                <label for="customer-dob" class="form-label">Enter Your DOB</label>
+                <input type="date" class="form-control" id="customer-dob">
+              </div>
+            <div class="mb-3">
+              <label for="customer-email" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="customer-email" aria-describedby="emailHelp">
+              <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+              <label for="customer-pwd" class="form-label">Password</label>
+              <input type="password" class="form-control" id="customer-pwd">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+
+    </section>
+
+{% endblock %}

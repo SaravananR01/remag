@@ -1,0 +1,74 @@
+
+<!--Table customers{
+  cus_id varchar [primary key]
+  cus_name varchar [not null]
+  cus_join_date date [not null]
+  ccus_points int 
+  dob date [not null]
+  phone_no varchar [not null, unique]
+  cus_email varchar [unique]
+  cus_password varchar [not null]
+}-->
+{% extends "all/base.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+    <div class="container p-5 text-center">
+        <h3 class="p-4">PLEASE ENTER YOUR DETAILS</h3>
+        <form class="row">
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">NAME</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="text" id="cus_name">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Date of Birth</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="date" id="cus_dob">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Phone_Num</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="text" id="cus_pn_no">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">E-Mail</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="email" id="cus_email">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Password</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="password" id="cus_pass">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Re-Type Password</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="password" id="cus_pass_2">
+                </div>
+            </div>
+            <button class="btn btn-success m-5">Make Account</button>  
+        </form>
+
+    </div>
+{% endblock %}
