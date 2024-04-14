@@ -1,24 +1,10 @@
-<head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script>
-        $(function(){
-            $("#header").load("header.html");
-        });
-        $(function(){
-            $("#footer").load("footer.html");
-        });
-    </script>
-    <link href="../styles/styles1.css" rel="stylesheet">
-    <link href="../styles/login-styles.css" rel="stylesheet">
-</head>
+{% extends "all/base.html" %}
 
-<body>
-    <!-- Header Section -->
-    <section id="header">
+{% block title %}
+    Home
+{% endblock %}
 
-    </section>
-
-    <!-- Main Section -->
+{% block content %}
 
     <section id="login-section">
         <div id="login">
@@ -43,8 +29,4 @@
         </div>
     </section>
 
-    <!-- Footer Section -->
-    <section id="footer">
-
-    </section>
-</body>
+{% endblock %}
