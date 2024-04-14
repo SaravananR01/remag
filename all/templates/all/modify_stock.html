@@ -1,0 +1,40 @@
+{% extends "all/base.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+    <div class="container p-5">
+        <div class="container p-2">
+            <button  class="btn btn-primary">
+                ADD ITEM
+            </button>
+        </div>
+        
+        <table class="table table-info table-stripped">
+            <tr>
+                <th class="col-1">ITEM_ID</th>
+                <th class="col">ITEM_NAME</th>
+                <th class="col"></th>
+            </tr>
+            <tr>
+                <td>123</td>
+                <td>Obama</td>
+                <td class="text-end">
+                    <a href="/">DELETE</a>
+                    <a href="/">MODIFY</a>
+                </td>
+            </tr>
+            <tr>
+                <td>123</td>
+                <td>Obama</td>
+                <td class="text-end">
+                    <a href="/">DELETE</a>
+                    <a href="/">MODIFY</a>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+{% endblock %}
