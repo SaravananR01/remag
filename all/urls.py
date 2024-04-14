@@ -10,4 +10,5 @@ urlpatterns = [
     path("signupcompany", views.company_signup, name="signupcompany"),
     path("signupcus", views.company_login, name="signupcus"),
     path("companypage", views.company_page, name="companypage"),
+    path("logout",views.home,name="logout")
 ]
