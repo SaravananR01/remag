@@ -7,34 +7,40 @@
 {% block content %}
     <section id="signup-section" class="col-md-4 offset-md-4">
         <h1>Sign Up!</h1>
-        <form>
+        <form method="POST">
+            {% csrf_token %}
             <div class="mb-3">
                 <label for="company-name" class="form-label">Enter Your Company Name</label>
-                <input class="form-control" type="text" placeholder="Company Name" id="company-name">
+                <input class="form-control" type="text" placeholder="Company Name" id="company-name" name="company-name">
             </div>
             <div class="mb-3">
                 <label for="company-phone" class="form-label">Enter Your Company's Phone No</label>
-                <input class="form-control" type="text" placeholder="Phone No" id="company-phone">
+                <input class="form-control" type="text" placeholder="Phone No" id="company-phone" name="company-phone">
             </div>
             <div class="form-group">
                 <label for="inputAddress">Address</label>
-                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" name="inputAddress">
               </div>
               <div class="form-group">
                 <label for="inputAddress2">Address 2</label>
-                <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+                <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor" name="inputAddress2">
               </div>
             <div class="mb-3">
               <label for="company-email" class="form-label">Email address</label>
-              <input type="email" class="form-control" id="company-email" aria-describedby="emailHelp">
+              <input type="email" class="form-control" id="company-email" aria-describedby="emailHelp" name="company-email">
               <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
             </div>
             <div class="mb-3">
               <label for="company-pwd" class="form-label">Password</label>
-              <input type="password" class="form-control" id="company-pwd">
+              <input type="password" class="form-control" id="company-pwd" name="company-pwd">
+            </div>
+            <div class="mb-3">
+              <label for="company-pwd" class="form-label">Re-Type Password</label>
+              <input type="password" class="form-control" id="cnf-pwd" name="cnf-pwd">
             </div>
             
             <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="error text-danger">{{error}}</div>
           </form>
 
     </section>

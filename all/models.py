@@ -1,7 +1,11 @@
 from django.db import models
 from django.contrib.auth.hashers import make_password
+import bcrypt
 
-# Create your models here.
+def hash_password(password):
+    salt = bcrypt.gensalt()  # Generate a random salt
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed_password.decode('utf-8')
 
 class Company(models.Model):
     c_id=models.CharField(primary_key=True,max_length=5)
@@ -9,11 +13,10 @@ class Company(models.Model):
     c_phone=models.IntegerField(null=False)
     c_address=models.CharField(max_length=200,null=False)
     c_email=models.CharField(null=False,max_length=30)
-    c_password=models.CharField(null=False,max_length=100)
-
+    c_password=models.CharField(null=False,max_length=200)
 
     def save(self, *args, **kwargs):
-        self.c_password = make_password(self.c_password)
+        self.c_password = hash_password(self.c_password)
         super(Company, self).save(*args, **kwargs)
 
 class Branch(models.Model):
@@ -61,7 +64,7 @@ class Employee(models.Model):
     dob=models.DateField(null=False)
     salary=models.IntegerField(null=False)
     emp_email=models.CharField(null=False,max_length=30)
-    emp_password=models.CharField(null=False,max_length=30)
+    emp_password=models.CharField(null=False,max_length=100)
 
     def save(self, *args, **kwargs):
         self.emp_password = make_password(self.emp_password)
@@ -82,7 +85,7 @@ class Customers(models.Model):
     dob= models.DateField(null=False)
     cus_phone_no=models.IntegerField()
     cus_email=models.CharField(null=False,max_length=30)
-    cus_password=models.CharField(null=False,max_length=30)
+    cus_password=models.CharField(null=False,max_length=100)
 
     
     def save(self, *args, **kwargs):
