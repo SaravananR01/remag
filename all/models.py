@@ -15,7 +15,6 @@ class Company(models.Model):
     c_email=models.CharField(null=False,max_length=30)
     c_password=models.CharField(null=False,max_length=200)
 
-
     def save(self, *args, **kwargs):
         self.c_password = hash_password(self.c_password)
         super(Company, self).save(*args, **kwargs)
