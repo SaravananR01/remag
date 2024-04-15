@@ -78,15 +78,30 @@ def company_signup(request):
     return render(request, "all/signup-company.html",context=context)
 
 def cus_signup(request):
-    return render(request, "all/signup-customer.html",{})
+    return render(request, "all/crt_acc.html",{})
 
 def company_page(request):
-    return render(request,"all/company-page.html",{})
+    all_stores=Store.objects.all()
+    all_warehouses=Warehouse.objects.all()
+    return render(request,"all/company-page.html",{'all_stores':all_stores,
+                                                   'all_warehouses':all_warehouses})
 
 def branch_page(request):
     return render(request,"all/edit-branch.html",{})
 
 def edit_emp(request):
+    if request.method=='POST':
+        emp_id=request.POST.get('emp-id')
+        b_id=request.POST.get('b_id')
+        ename=request.POST.get('ename')
+        emp_phone_num=request.POST.get('emp-phone-num')
+        emp_department=request.POST.get('emp-department')
+        emp_dob=request.POST.get('emp-dob')
+        emp_salary=request.POST.get('emp-salary')
+        company_email=request.POST.get('company-email')
+        company_pwd=request.POST.get('company-pwd')
+
+        
     return render(request,"all/edit-employee.html",{})
 
 def edit_shop(request):
@@ -99,7 +114,7 @@ def emp_page(request):
     return render(request,"all/employee-page.html",{})
 
 def modify_item_details(request):
-    return render(request,"all/modify_tem_details.html",{})
+    return render(request,"all/modify_item_details.html",{})
 
 def modify_stock(request):
     return render(request,"all/modify_stock.html",{})

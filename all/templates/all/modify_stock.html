@@ -7,7 +7,7 @@
 {% block content %}
     <div class="container p-5">
         <div class="container p-2">
-            <button  class="btn btn-primary">
+            <button  class="btn btn-primary" onclick="location.href = '/add-item';">
                 ADD ITEM
             </button>
         </div>
@@ -22,16 +22,16 @@
                 <td>123</td>
                 <td>Obama</td>
                 <td class="text-end">
-                    <a href="/">DELETE</a>
-                    <a href="/">MODIFY</a>
+                    <button  class="btn btn-primary" >DELETE</button>
+                    <button  class="btn btn-primary" onclick="location.href = '/modify-item-details';">MODIFY</button>
                 </td>
             </tr>
             <tr>
                 <td>123</td>
                 <td>Obama</td>
                 <td class="text-end">
-                    <a href="/">DELETE</a>
-                    <a href="/">MODIFY</a>
+                    <button  class="btn btn-primary">DELETE</button>
+                    <button  class="btn btn-primary" onclick="location.href = '/modify-item-details';">MODIFY</button>
                 </td>
             </tr>
         </table>

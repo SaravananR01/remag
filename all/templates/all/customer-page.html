@@ -15,7 +15,7 @@
 {% block content %}
     <div class="container p-5">
         <div class="container p-2">
-            <button class="btn btn-primary">
+            <button class="btn btn-primary" onclick="location.href = '/source-item';">
                 Looking for a specific item?
             </button>
         </div>
@@ -34,7 +34,7 @@
                 <td>1/2/3</td>
                 <td>123123123</td>
                 <td class="text-end">
-                    <a href="/">VIEW</a>
+                    <button class="btn btn-primary" onclick="location.href = '/transaction-details';">VIEW</button>
                 </td>
             </tr>
             <tr>
@@ -43,10 +43,10 @@
                 <td>1/2/3</td>
                 <td>123123123</td>
                 <td class="text-end">
-                    <a href="/">VIEW</a>
+                    <button class="btn btn-primary" onclick="location.href = '/transaction-details';">VIEW</button>
                 </td>
             </tr>
         </table>
 
     </div>
-{% enblock %}
+{% endblock %}
