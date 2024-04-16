@@ -60,7 +60,7 @@ class Employee(models.Model):
     b_id=models.ForeignKey(Branch,on_delete=models.CASCADE)
     emp_name=models.CharField(max_length=40,null=False)
     emp_phone_no=models.IntegerField(null=False)
-    # department=models.CharField()
+    department=models.CharField(max_length=30)
     dob=models.DateField(null=False)
     salary=models.IntegerField(null=False)
     emp_email=models.CharField(null=False,max_length=30)

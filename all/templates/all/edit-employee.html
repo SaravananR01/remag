@@ -6,26 +6,27 @@
 
 {% block content %}
     <div class="shop-details">
-        <form class="col-md-4 offset-md-4 mt-5 border p-3">
+        <form class="col-md-4 offset-md-4 mt-5 border p-3" method="post">
+            {% csrf_token %}
             <h4 class="pb-3">Edit Employee Details</h4>
             <label for="emp-id" class="form-label">Emp ID:</label>
-            <input type="text" id="emp-id" name="emp-id"class="form-control" value="{}">
+            <input type="text" id="emp-id" name="emp-id"class="form-control" value="{{emp.emp_id}}">
             <label for="b_id" class="form-label">Branch ID:</label>
-            <input type="text" id="b_id" name="b_id" class="form-control" value="{}">
+            <input type="text" id="b_id" name="b_id" class="form-control" value="{{emp.b_id}}">
             <label for="ename" class="form-label">Employee Name:</label>
-            <input type="text" id="ename" name="ename" class="form-control" value="{}">
+            <input type="text" id="ename" name="ename" class="form-control" value="{emp.emp_name}">
             <label for="emp-phone-num" class="form-label">Employee Phone No:</label>
-            <input type="text" id="emp-phone-num" name="emp-phone-num" class="form-control" value="{}">
+            <input type="text" id="emp-phone-num" name="emp-phone-num" class="form-control" value="{{emp.emp_phone_no}}">
             <label for="emp-department" class="form-label">Department:</label>
-            <input type="text" id="emp-department" name="emp-department" class="form-control" value="{}">
+            <input type="text" id="emp-department" name="emp-department" class="form-control" value="{{emp.department}}">
             <label for="emp-dob" class="form-label">Employee Date of Birth:</label>
-            <input type="date" id="emp-dob" name="emp-dob" class="form-control" value="{}">
+            <input type="date" id="emp-dob" name="emp-dob" class="form-control" value="{{emp.dob}}">
             <label for="emp-salary" class="form-label">Salary:</label>
-            <input type="text" id="emp-salary" name="emp-salary" class="form-control" value="{}">
-            <label for="company-email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="company-email" name="company-email" aria-describedby="emailHelp">
-            <label for="company-pwd" class="form-label">Password</label>
-            <input type="password" class="form-control" id="company-pwd" name="company-pwd">
+            <input type="text" id="emp-salary" name="emp-salary" class="form-control" value="{{emp.salary}}">
+            <label for="emp-email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="emp-email" name="emp-email" aria-describedby="emailHelp">
+            <label for="emp-pwd" class="form-label">Password</label>
+            <input type="password" class="form-control" id="emp-pwd" name="emp-pwd">
 
             <button type="submit" class="btn btn-success mt-3 col-md-2 offset-md-5">Save</button>
         </form>

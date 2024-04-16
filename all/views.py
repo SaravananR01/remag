@@ -2,7 +2,8 @@ from django.shortcuts import render,redirect
 from .models import *
 from django.contrib.auth.hashers import check_password,make_password
 import random,bcrypt
-
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 def gen_id():
     chars=[chr(x) for x in range (65,91)]
@@ -87,22 +88,68 @@ def company_page(request):
                                                    'all_warehouses':all_warehouses})
 
 def branch_page(request):
-    return render(request,"all/edit-branch.html",{})
+    all_emps=Employee.objects.all() 
+    url=reverse("edit")
+    return render(request,"all/edit-branch.html",{'all_emps':all_emps,'url':url})
 
-def edit_emp(request):
-    if request.method=='POST':
-        emp_id=request.POST.get('emp-id')
-        b_id=request.POST.get('b_id')
-        ename=request.POST.get('ename')
-        emp_phone_num=request.POST.get('emp-phone-num')
-        emp_department=request.POST.get('emp-department')
-        emp_dob=request.POST.get('emp-dob')
-        emp_salary=request.POST.get('emp-salary')
-        company_email=request.POST.get('company-email')
-        company_pwd=request.POST.get('company-pwd')
 
-        
-    return render(request,"all/edit-employee.html",{})
+def edit_emp(request, id=None):    
+    if id is None: 
+        if request.method == 'POST':
+            emp_id = request.POST.get('emp-id')
+            b_id = request.POST.get('b_id')
+            ename = request.POST.get('ename')
+            emp_phone_num = request.POST.get('emp-phone-num')
+            emp_department = request.POST.get('emp-department')
+            emp_dob = request.POST.get('emp-dob')
+            emp_salary = request.POST.get('emp-salary')
+            emp_email = request.POST.get('emp-email')
+            emp_pwd = request.POST.get('emp-pwd')
+            branch = Branch.objects.get(pk=b_id)
+            employee = Employee.objects.create(
+                emp_id=emp_id, 
+                b_id=branch, 
+                emp_name=ename,
+                emp_phone_no=emp_phone_num,
+                department=emp_department,
+                dob=emp_dob,
+                salary=emp_salary,
+                emp_email=emp_email,
+                emp_password=emp_pwd
+            )   
+            return render(request, "all/edit-employee.html", {})
+        else:
+            return render(request, "all/edit-employee.html", {})
+    else:
+        if request.method == 'POST':
+            emp_id = request.POST.get('emp-id')
+            b_id = request.POST.get('b_id')
+            ename = request.POST.get('ename')
+            emp_phone_num = request.POST.get('emp-phone-num')
+            emp_department = request.POST.get('emp-department')
+            emp_dob = request.POST.get('emp-dob')
+            emp_salary = request.POST.get('emp-salary')
+            emp_email = request.POST.get('emp-email')
+            emp_pwd = request.POST.get('emp-pwd')
+            branch = Branch.objects.get(pk=b_id)
+            employee = Employee.objects.get(pk=id)
+
+            employee.emp_id = emp_id
+            employee.b_id = branch
+            employee.emp_name = ename
+            employee.emp_phone_no = emp_phone_num
+            employee.department = emp_department
+            employee.dob = emp_dob
+            employee.salary = emp_salary
+            employee.emp_email = emp_email
+            employee.emp_password = emp_pwd
+            
+            employee.save()
+
+            return render(request, "all/edit-employee.html", {'emp': employee})
+        else:
+            return render(request, "all/edit-employee.html", {'emp': Employee.objects.get(pk=id)})
+
 
 def edit_shop(request):
     return render(request,"all/edit-shop.html",{})
