@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.hashers import make_password
+#from django.contrib.auth.hashers import make_password
 import bcrypt
 
 def hash_password(password):
@@ -64,10 +64,10 @@ class Employee(models.Model):
     dob=models.DateField(null=False)
     salary=models.IntegerField(null=False)
     emp_email=models.CharField(null=False,max_length=30)
-    emp_password=models.CharField(null=False,max_length=100)
+    emp_password=models.CharField(null=False,max_length=200)
 
     def save(self, *args, **kwargs):
-        self.emp_password = make_password(self.emp_password)
+        self.emp_password = hash_password(self.emp_password)
         super(Employee, self).save(*args, **kwargs)
 
 # class Departments(models.Model):
@@ -85,11 +85,11 @@ class Customers(models.Model):
     dob= models.DateField(null=False)
     cus_phone_no=models.IntegerField()
     cus_email=models.CharField(null=False,max_length=30)
-    cus_password=models.CharField(null=False,max_length=100)
+    cus_password=models.CharField(null=False,max_length=200)
 
     
     def save(self, *args, **kwargs):
-        self.cus_password = make_password(self.cus_password)
+        self.cus_password = hash_password(self.cus_password)
         super(Customers, self).save(*args, **kwargs)
 
 class Transaction(models.Model):

@@ -24,7 +24,7 @@ urlpatterns = [
     path("edit-warehouse", views.edit_warehouse, name="edit-warehouse"),
     path("store-form",views.changeshop,name="store-form"),
     path("warehouse-form",views.changewarehouse,name="warehouse-form"),
-    path("signupcus", views.company_login, name="signupcus"),
+    path("signupcus", views.cus_signup, name="signupcus"),
     path("companypage", views.company_page, name="companypage"),
-    path("logout",views.home,name="logout")
+    path("logout",views.logout,name="logout")
 ]

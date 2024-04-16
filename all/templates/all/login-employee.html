@@ -8,7 +8,8 @@
     <section id="login-section">
         <div id="login">
             <h1>Login as Employee</h1>
-            <form>
+            <form method="post">
+                {% csrf_token %}
                 <div class="mb-3 col-md-4 offset-md-4">
                 <label for="exampleInputEmail1" class="form-label">Email address</label>
                 <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
@@ -18,18 +19,10 @@
                 <label for="exampleInputPassword1" class="form-label">Password</label>
                 <input type="password" class="form-control" id="exampleInputPassword1">
                 </div>
-                <div class="mb-3 form-check col-md-4 offset-md-4">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                </div>
                 <button type="submit" class="btn btn-primary col-md-4 offset-md-4">Submit</button>
+                <div class="error text-danger">{{error}}</div>
             </form>
         </div>
-    </section>
-
-    <!-- Footer Section -->
-    <section id="footer">
-
     </section>
 </body>
 
