@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
 from .models import *
 from django.contrib.auth.hashers import check_password,make_password
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.contrib.auth.password_validation import validate_password
 import random,bcrypt,datetime
 
@@ -124,48 +126,49 @@ def company_signup(request):
     return render(request, "all/signup-company.html",context=context)
 
 def cus_signup(request):
-    context={}
-    if request.method == 'POST':
-        cus_name = request.POST['customer-name']
-        cus_phone = request.POST['customer-phone']
-        cus_dob = request.POST['customer-dob']
-        cus_email = request.POST['customer-email']
-        password = request.POST['customer-pwd']
-        cnfpass = request.POST['customer-pwd2']
-        if cus_dob!="":
-            cus_dob = datetime.datetime.strptime(cus_dob, '%Y-%m-%d').date()
-        if password!=cnfpass:
-            context['error']="PASSWORDS DO NOT MATCH!"
-        else:
-            users = Customers.objects.filter(cus_email=cus_email)
-            if len(users)>0:
-                context['error']="Customer already exists. Please log-in."
-            elif cus_name=="" or cus_phone==""  or cus_dob=="" or cus_email=="" or password=="":
-                context['error']="Blank Fields are not allowed."
-            elif cus_dob.year>datetime.date.today().year or cus_dob.year<datetime.date.today().year-100:
-                context['error']="Invalid date of birth."
-            elif (not cus_phone.isdigit()) or (len(cus_phone)!=10):
-                context['error']="Invalid phone number."
+        context={}
+        if request.method == 'POST':
+            cus_name = request.POST['customer-name']
+            cus_phone = request.POST['customer-phone']
+            cus_dob = request.POST['customer-dob']
+            cus_email = request.POST['customer-email']
+            password = request.POST['customer-pwd']
+            cnfpass = request.POST['customer-pwd2']
+            if cus_dob!="":
+                cus_dob = datetime.datetime.strptime(cus_dob, '%Y-%m-%d').date()
+            if password!=cnfpass:
+                context['error']="PASSWORDS DO NOT MATCH!"
             else:
-                
-                try:
-                    validate_password(password)
-                except Exception as e:
-                    context['error']="Please use a stronger password. "+" ".join(e)
+                users = Customers.objects.filter(cus_email=cus_email)
+                if len(users)>0:
+                    context['error']="Customer already exists. Please log-in."
+                elif cus_name=="" or cus_phone==""  or cus_dob=="" or cus_email=="" or password=="":
+                    context['error']="Blank Fields are not allowed."
+                elif cus_dob.year>datetime.date.today().year or cus_dob.year<datetime.date.today().year-100:
+                    context['error']="Invalid date of birth."
+                elif (not cus_phone.isdigit()) or (len(cus_phone)!=10):
+                    context['error']="Invalid phone number."
                 else:
-                    new_comp=Customers.objects.create(
-                        cus_id=gen_id(),
-                        cus_name=cus_name,
-                        cus_join_date=datetime.date.today(),
-                        cus_points=0,
-                        dob= cus_dob,
-                        cus_phone_no=cus_phone,
-                        cus_email=cus_email,
-                        cus_password=password
-                    )
-                    return redirect("/logincus")
-        
-    return render(request, "all/signup-customer.html",context)
+                    
+                    try:
+                        validate_password(password)
+                    except Exception as e:
+                        context['error']="Please use a stronger password. "+" ".join(e)
+                    else:
+                        new_comp=Customers.objects.create(
+                            cus_id=gen_id(),
+                            cus_name=cus_name,
+                            cus_join_date=datetime.date.today(),
+                            cus_points=0,
+                            dob= cus_dob,
+                            cus_phone_no=cus_phone,
+                            cus_email=cus_email,
+                            cus_password=password
+                        )
+                        return redirect("/logincus")
+            
+        return render(request, "all/signup-customer.html",context)
+   
 
 def company_page(request):
     context={}
@@ -173,14 +176,76 @@ def company_page(request):
         user = Company.objects.filter(c_id=request.session['company'])
         if len(user)>0:
             context['email']=request.session['email']
+            all_stores=Store.objects.filter(c_id=request.session['company'])
+            all_warehouses=Warehouse.objects.filter(c_id=request.session['company'])
+            context['all_stores']=all_stores
+            context['all_warehouses']=all_warehouses
             return render(request,"all/company-page.html",context=context)
     return redirect("/logincompany")
 
 def branch_page(request):
-    return render(request,"all/edit-branch.html",{})
+    all_emps=Employee.objects.all() 
+    url=reverse("edit")
+    return render(request,"all/edit-branch.html",{'all_emps':all_emps,'url':url})
 
-def edit_emp(request):
-    return render(request,"all/edit-employee.html",{})
+
+def edit_emp(request, id=None):    
+    if id is None: 
+        if request.method == 'POST':
+            emp_id = request.POST.get('emp-id')
+            b_id = request.POST.get('b_id')
+            ename = request.POST.get('ename')
+            emp_phone_num = request.POST.get('emp-phone-num')
+            emp_department = request.POST.get('emp-department')
+            emp_dob = request.POST.get('emp-dob')
+            emp_salary = request.POST.get('emp-salary')
+            emp_email = request.POST.get('emp-email')
+            emp_pwd = request.POST.get('emp-pwd')
+            branch = Branch.objects.get(pk=b_id)
+            employee = Employee.objects.create(
+                emp_id=emp_id, 
+                b_id=branch, 
+                emp_name=ename,
+                emp_phone_no=emp_phone_num,
+                department=emp_department,
+                dob=emp_dob,
+                salary=emp_salary,
+                emp_email=emp_email,
+                emp_password=emp_pwd
+            )   
+            return render(request, "all/edit-employee.html", {})
+        else:
+            return render(request, "all/edit-employee.html", {})
+    else:
+        if request.method == 'POST':
+            emp_id = request.POST.get('emp-id')
+            b_id = request.POST.get('b_id')
+            ename = request.POST.get('ename')
+            emp_phone_num = request.POST.get('emp-phone-num')
+            emp_department = request.POST.get('emp-department')
+            emp_dob = request.POST.get('emp-dob')
+            emp_salary = request.POST.get('emp-salary')
+            emp_email = request.POST.get('emp-email')
+            emp_pwd = request.POST.get('emp-pwd')
+            branch = Branch.objects.get(pk=b_id)
+            employee = Employee.objects.get(pk=id)
+
+            employee.emp_id = emp_id
+            employee.b_id = branch
+            employee.emp_name = ename
+            employee.emp_phone_no = emp_phone_num
+            employee.department = emp_department
+            employee.dob = emp_dob
+            employee.salary = emp_salary
+            employee.emp_email = emp_email
+            employee.emp_password = emp_pwd
+            
+            employee.save()
+
+            return render(request, "all/edit-employee.html", {'emp': employee})
+        else:
+            return render(request, "all/edit-employee.html", {'emp': Employee.objects.get(pk=id)})
+
 
 def edit_shop(request):
     return render(request,"all/edit-shop.html",{})
@@ -200,7 +265,7 @@ def emp_page(request):
     
 
 def modify_item_details(request):
-    return render(request,"all/modify_tem_details.html",{})
+    return render(request,"all/modify_item_details.html",{})
 
 def modify_stock(request):
     return render(request,"all/modify_stock.html",{})

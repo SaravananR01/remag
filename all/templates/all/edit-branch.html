@@ -10,11 +10,11 @@
         Display Shop Details Here
     -->
     <h4 class="my-3">Edit Shop Details</h4>
-    <button type="button" class="btn btn-primary btn-lg mb-2">Edit Shop Details</button>
+    <button type="button" class="btn btn-primary btn-lg mb-2" onclick="location.href = '/edit-shop';">Edit Shop Details</button>
     <br>
     <!-- Display the list of employees-->
     <h4 class="mt-5">Edit Employee Details</h4>
-    <button type="button" class="btn btn-primary btn-lg  my-3">Add Employee</button>
+    <button type="button" class="btn btn-primary btn-lg  my-3" onclick="location.href = '/add-or-edit-emp';" method="post">Add Employee</button>
     <table class="table table-striped col-md-6">
         <tr>
             <th scope="col-1">Emp_ID</th>
@@ -22,6 +22,18 @@
             <th scope="col-2">Department</th>
             <th scope="col-1">Edit</th>
         </tr>
+        {% for emp in all_emps %}
+            <tr>
+                <td>{{emp.emp_id}}</td>
+                <td>{{emp.emp_name}}</td>
+                <td>{{emp.department}}</td>
+                {% with emp_id=emp.emp_id|slice:"0:3" %}
+                    {% with emp_id_int=emp_id|add:0 %}
+                        <td><a href="{%url 'edit' emp_id_int %}" class="btn btn-primary btn-sm">Edit Employee Details</a></td>
+                    {% endwith %}
+                {% endwith %}
+            </tr>
+        {% endfor %}
     </table>
 </div>    
 

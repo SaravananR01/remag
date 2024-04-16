@@ -1,5 +1,4 @@
-from django.urls import path
-
+from django.urls import path,include, re_path
 from . import views
 
 urlpatterns = [
@@ -11,7 +10,8 @@ urlpatterns = [
     path("signupcus", views.cus_signup, name="signupcus"),
     path("companypage", views.company_page, name="companypage"),
     path("branchpage", views.branch_page, name="branchpage"),
-    path("edit-emp", views.edit_emp, name="edit-emp"),
+    re_path("add-or-edit-emp/<int:id>", views.edit_emp, name="edit"),
+    re_path("add-or-edit-emp", views.edit_emp, name="name"),
     path("edit-shop", views.edit_shop, name="edit-shop"),
     path("emp-page", views.emp_page, name="emp-page"),
     path("modify-item-details", views.modify_item_details, name="modify-item-details"),
