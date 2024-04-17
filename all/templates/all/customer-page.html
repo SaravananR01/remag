@@ -28,24 +28,17 @@
                 <th class="col">Cost</th>
                 <th class="col"></th>
             </tr>
+            {% for item in items %}
             <tr>
-                <td>123</td>
-                <td>456</td>
-                <td>1/2/3</td>
-                <td>123123123</td>
+                <td>{{item.t_id}}</td>
+                <td>{{item.emp_id}}</td>
+                <td>{{item.date_of_transaction}}</td>
+                <td>{{item.total_cost}}</td>
                 <td class="text-end">
-                    <button class="btn btn-primary" onclick="location.href = '/transaction-details';">VIEW</button>
+                    <button class="btn btn-primary" onclick="location.href = '/transaction-details/{{item.t_id}}';">VIEW</button>
                 </td>
             </tr>
-            <tr>
-                <td>123</td>
-                <td>456</td>
-                <td>1/2/3</td>
-                <td>123123123</td>
-                <td class="text-end">
-                    <button class="btn btn-primary" onclick="location.href = '/transaction-details';">VIEW</button>
-                </td>
-            </tr>
+            {% endfor %}
         </table>
 
     </div>

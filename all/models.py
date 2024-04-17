@@ -97,6 +97,7 @@ class Transaction(models.Model):
     emp_id=models.ForeignKey(Employee,on_delete=models.CASCADE)
     date_of_transaction=models.DateField(null=False)
     cus_id=models.ForeignKey(Customers,on_delete=models.CASCADE)
+    total_cost=models.IntegerField(null=False)
 
 class Orders(models.Model):
     o_id=models.CharField(primary_key=True,max_length=5)
