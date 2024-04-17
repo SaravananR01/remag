@@ -20,14 +20,12 @@
                         <th class="col-1">Product Name</th>
                         <th class="col">Quantity</th>
                     </tr>
+                    {% for name,qty in items.items %}
                     <tr>
-                        <td>123</td>
-                        <td>456</td>
+                        <td>{{name}}</td>
+                        <td>{{qty}}</td>
                     </tr>
-                    <tr>
-                        <td>123</td>
-                        <td>456</td>
-                    </tr>
+                    {% endfor %}
                 </table>
             </div>
             <div class="col"></div>

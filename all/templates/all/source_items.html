@@ -11,25 +11,25 @@
                 Go Back
             </button>
         </div>
-        <div class="row m-5 text-center">
-            <div class="col-7"><input type="text" id="search_box" class="form-control"></div>
-            <div class="col-5"><button class="btn btn-success justify-content-start">SEARCH</button></div>
-             
-        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row m-5 text-center">
+                <div class="col-7"><input type="text" id="search_box" class="form-control" name="search_box"></div>
+                <div class="col-5"><button type="submit" class="btn btn-success justify-content-start">SEARCH</button></div>
+            </div>
+        </form>
+        
         
         <div class="row">
             <table class="table table-info">
                 <tr><th>ITEM NAME</th></tr>
+                {% for item in items %}
                 <tr>
                     <td>
-                        LLLL
+                        {{item.p_name}}
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        LLLL
-                    </td>
-                </tr>
+                {% endfor %}
             </table>
         </div>
     </div>

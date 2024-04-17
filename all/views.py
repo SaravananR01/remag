@@ -270,9 +270,6 @@ def modify_item_details(request):
 def modify_stock(request):
     return render(request,"all/modify_stock.html",{})
 
-def transaction_details(request):
-    return render(request,"all/transaction_details.html",{})
-
 def transaction(request):
     return render(request,"all/transaction.html",{})
 
@@ -280,17 +277,42 @@ def add_item(request):
     return render(request,"all/add_itm.html",{})
 
 def source_items(request):
-    return render(request,"all/source_items.html",{})
+    context={}
+    search_str=""
+    if request.method == 'POST':
+        search_str=request.POST.get('search_box')
+    items=S_Products.objects.filter(p_name__regex=search_str)
+    context['items']=items
+    return render(request,"all/source_items.html",context=context)
 
-def customerpage(request):
+def customerpage(request,):
     context={}
     if 'cus' in request.session:
         user = Customers.objects.filter(cus_id=request.session['cus'])
         if len(user)>0:
             context['email']=request.session['email']
+            context['items']=Transaction.objects.filter(cus_id=request.session['cus'])
             return render(request,"all/customer-page.html",context=context)
-    return redirect("/cuslogin")
+    return redirect("/logincus")
     
+def transaction_details(request,t_id):
+    context={}
+    if 'cus' in request.session:
+        context['items']=Transaction.objects.filter(t_id=t_id)
+        if len(context['items'])<1 or str(request.session['cus'])!=str(context['items'][0].cus_id.cus_id):
+            return redirect('/logincus')
+        else:
+            orders_data=Orders.objects.filter(t_id=t_id)
+            context['items']={} 
+            for item in orders_data:
+                temp_name=S_Products.objects.filter(p_id=item.p_id.p_id)
+                if len(temp_name)>0:
+                    context['items'][temp_name[0].p_name]=item.p_id.quantity
+            print(context['items'])
+            return render(request,"all/transaction_details.html",context=context)
+    return redirect('/logincus')
+
+
 
 def changeshop(request):
     if request.method == 'POST':
