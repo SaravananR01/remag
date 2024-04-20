@@ -21,18 +21,18 @@ class Company(models.Model):
 
 class Branch(models.Model):
     b_id=models.CharField(primary_key=True,max_length=5)
-    c_id=models.ForeignKey(Company, on_delete=models.CASCADE)
+    company=models.ForeignKey(Company, on_delete=models.CASCADE)
     b_address=models.CharField(null=False,max_length=200)
     b_phone_no=models.IntegerField(null=False)
 
 class Warehouse(models.Model):
     w_id=models.CharField(primary_key=True,max_length=5)
-    b_id=models.ForeignKey(Branch,on_delete=models.CASCADE)
+    branch=models.ForeignKey(Branch,on_delete=models.CASCADE)
     w_admin_id=models.CharField(null=True,max_length=5)
 
 class Store(models.Model):
     s_id=models.CharField(primary_key=True,max_length=5)
-    b_id=models.ForeignKey(Branch,on_delete=models.CASCADE)
+    branch=models.ForeignKey(Branch,on_delete=models.CASCADE)
     s_admin_id=models.CharField(null=True,max_length=5)
 
 class W_Products(models.Model):

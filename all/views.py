@@ -4,7 +4,7 @@ from django.contrib.auth.hashers import check_password,make_password
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.password_validation import validate_password
-import random,bcrypt,datetime
+import random,bcrypt,datetime,time
 
 
 def gen_id():
@@ -171,16 +171,50 @@ def cus_signup(request):
    
 
 def company_page(request):
-    context={}
+    context = {}
     if 'company' in request.session:
         user = Company.objects.filter(c_id=request.session['company'])
-        if len(user)>0:
-            context['email']=request.session['email']
-            all_stores=Store.objects.filter(c_id=request.session['company'])
-            all_warehouses=Warehouse.objects.filter(c_id=request.session['company'])
-            context['all_stores']=all_stores
-            context['all_warehouses']=all_warehouses
-            return render(request,"all/company-page.html",context=context)
+        company=Company.objects.get(pk=request.session['company'])
+        if user.exists():
+            context['company_id'] = company.c_id
+            context['company_name'] = company.c_name
+            context['email'] = request.session['email']
+            company_branches = Branch.objects.filter(company=request.session['company'])
+            all_stores = []
+            all_warehouses = []
+
+            for branch in company_branches:
+                stores = Store.objects.filter(branch=branch)
+                warehouses = Warehouse.objects.filter(branch=branch)
+                all_stores.extend(stores)
+                all_warehouses.extend(warehouses)
+            context['all_stores'] = all_stores
+            context['all_warehouses'] = all_warehouses
+            return render(request, "all/company-page.html", context=context)
+
+    return redirect("/logincompany")
+
+def add_branch(request):
+    context = {}
+    if 'company' in request.session:
+        user = Company.objects.filter(c_id=request.session['company'])
+        company=Company.objects.get(pk=request.session['company'])
+        if user.exists():
+            b_id=gen_id()
+            context['branch_id']=b_id
+            context['company_id']=company.c_id
+            if request.method == 'POST':
+                b_address=request.POST.get('address')
+                b_phone_no=request.POST.get('phone-no')
+                new_branch=Branch.objects.create(
+                    b_id=b_id,
+                    company=company,
+                    b_address=b_address,
+                    b_phone_no=b_phone_no
+                )
+                new_branch.save()
+                return redirect("/companypage")
+            return render(request, "all/add-branch.html", context=context)
     return redirect("/logincompany")
 
 def branch_page(request):
@@ -189,64 +223,95 @@ def branch_page(request):
     return render(request,"all/edit-branch.html",{'all_emps':all_emps,'url':url})
 
 
-def edit_emp(request, id=None):    
-    if id is None: 
-        if request.method == 'POST':
-            emp_id = request.POST.get('emp-id')
-            b_id = request.POST.get('b_id')
-            ename = request.POST.get('ename')
-            emp_phone_num = request.POST.get('emp-phone-num')
-            emp_department = request.POST.get('emp-department')
-            emp_dob = request.POST.get('emp-dob')
-            emp_salary = request.POST.get('emp-salary')
-            emp_email = request.POST.get('emp-email')
-            emp_pwd = request.POST.get('emp-pwd')
-            branch = Branch.objects.get(pk=b_id)
-            employee = Employee.objects.create(
-                emp_id=emp_id, 
-                b_id=branch, 
-                emp_name=ename,
-                emp_phone_no=emp_phone_num,
-                department=emp_department,
-                dob=emp_dob,
-                salary=emp_salary,
-                emp_email=emp_email,
-                emp_password=emp_pwd
-            )   
-            return render(request, "all/edit-employee.html", {})
-        else:
-            return render(request, "all/edit-employee.html", {})
-    else:
-        if request.method == 'POST':
-            emp_id = request.POST.get('emp-id')
-            b_id = request.POST.get('b_id')
-            ename = request.POST.get('ename')
-            emp_phone_num = request.POST.get('emp-phone-num')
-            emp_department = request.POST.get('emp-department')
-            emp_dob = request.POST.get('emp-dob')
-            emp_salary = request.POST.get('emp-salary')
-            emp_email = request.POST.get('emp-email')
-            emp_pwd = request.POST.get('emp-pwd')
-            branch = Branch.objects.get(pk=b_id)
-            employee = Employee.objects.get(pk=id)
+def add_emp(request):
+    context = {}
+    if 'company' in request.session:
+        user = Company.objects.filter(c_id=request.session['company'])
+        company_branches = Branch.objects.filter(company=request.session['company'])
+        all_branches=[]
+        for branch in company_branches:
+            all_branches.append(branch.b_id)
+        context['company_branches']=all_branches
+        if user.exists():
+                emp_id=gen_id()
+                context['emp_id']=emp_id
+                if request.method == 'POST':
+                    branch_id=request.POST.get('branch')
+                    branch_id = branch_id[branch_id.find("(")+1:branch_id.find(")")]
+                    branch=Branch.objects.get(b_id=branch_id)
+                    ename = request.POST.get('ename')
+                    emp_phone_num = request.POST.get('emp-phone-num')
+                    emp_department = request.POST.get('emp-department')
+                    emp_dob = request.POST.get('emp-dob')
+                    emp_salary = request.POST.get('emp-salary')
+                    emp_email = request.POST.get('emp-email')
+                    emp_pwd = request.POST.get('emp-pwd')
+                    employee = Employee.objects.create(
+                        emp_id=emp_id, 
+                        b_id=branch, 
+                        emp_name=ename,
+                        emp_phone_no=emp_phone_num,
+                        department=emp_department,
+                        dob=emp_dob,
+                        salary=emp_salary,
+                        emp_email=emp_email,
+                        emp_password=emp_pwd
+                    )   
+                    return render(request, "all/add-employee.html", context=context)
+                else:
+                    return render(request, "all/add-employee.html", context=context)
+    return redirect('/logincompany')
 
-            employee.emp_id = emp_id
-            employee.b_id = branch
-            employee.emp_name = ename
-            employee.emp_phone_no = emp_phone_num
-            employee.department = emp_department
-            employee.dob = emp_dob
-            employee.salary = emp_salary
-            employee.emp_email = emp_email
-            employee.emp_password = emp_pwd
-            
-            employee.save()
+def edit_emp(request,emp_id):
+    context = {}
+    if 'company' in request.session:
+        user = Company.objects.filter(c_id=request.session['company'])
+        if user.exists():
+                company_branches = Branch.objects.filter(company=request.session['company'])
+                all_branches=[]
+                for branch in company_branches:
+                    all_branches.append(branch.b_id)
+                context['company_branches']=all_branches
+                context['emp_details']=Employee.objects.get(pk=emp_id)
+                if request.method == 'POST':
+                    branch_id = request.POST.get('branch')
+                    branch_id = branch_id[branch_id.find("(")+1:branch_id.find(")")]
+                    ename = request.POST.get('ename')
+                    emp_phone_num = request.POST.get('emp-phone-num')
+                    emp_department = request.POST.get('emp-department')
+                    emp_salary = request.POST.get('emp-salary')
+                    branch = Branch.objects.get(b_id=branch_id)
+                    employee = Employee.objects.get(pk=emp_id)
 
-            return render(request, "all/edit-employee.html", {'emp': employee})
-        else:
-            return render(request, "all/edit-employee.html", {'emp': Employee.objects.get(pk=id)})
+                    employee.emp_id = emp_id
+                    employee.b_id = branch
+                    employee.emp_name = ename
+                    employee.emp_phone_no = emp_phone_num
+                    employee.department = emp_department
+                    employee.salary = emp_salary
+                    
+                    employee.save()
 
+                    return render(request, "all/edit-employee.html", context=context)
+                else:
+                    return render(request, "all/edit-employee.html", context=context)
+    return redirect('/logincompany')
 
+def all_emps(request):
+    context = {}
+    if 'company' in request.session:
+        user = Company.objects.filter(c_id=request.session['company'])
+        company=Company.objects.get(pk=request.session['company'])
+        if user.exists():
+            context['email'] = request.session['email']
+            company_branches = Branch.objects.filter(company=request.session['company'])
+            all_emps=[]
+            for branch in company_branches:
+                all_emps.extend(Employee.objects.filter(b_id=branch))
+            context['all_emps']=all_emps
+            return render(request,"all/all-employees.html",context=context)
+    return redirect("/logincompany")
+    
 def edit_shop(request):
     return render(request,"all/edit-shop.html",{})
 

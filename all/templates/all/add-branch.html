@@ -1,0 +1,24 @@
+{% extends "all/base.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+    <div class="shop-details">
+        <form class="col-md-4 offset-md-4 mt-5 border p-3" method="post" action="/add-branch">
+            {% csrf_token %}
+            <h4 class="pb-3">Add a Branch</h4>
+            <label for="b_id" class="form-label">Branch ID:</label>
+            <input type="text" id="b_id" name="b_id" class="form-control" value="{{branch_id}}" disabled>
+            <label for="c_id" class="form-label">Company ID:</label>
+            <input type="text" id="c_id" name="c_id" class="form-control" value="{{company_id}}" disabled>
+            <label for="address" class="form-label">Address:</label>
+            <input type="text" id="address" name="address" class="form-control" value="">
+            <label for="phone-no" class="form-label">Phone Number:</label>
+            <input type="text" id="phone-no" name="phone-no" class="form-control" value="">
+            <button type="submit" class="btn btn-success mt-3 col-md-2 offset-md-5">Save</button>
+        </form>
+    </div>
+{% endblock %}
+        
