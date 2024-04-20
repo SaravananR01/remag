@@ -6,12 +6,12 @@
 
 {% block content %}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <h2>Company ID: </h2>
-    <h2>Company Name: </h2>
-
+    <h2>Company ID: {{company_id}}</h2>
+    <h2>Company Name: {{company_name}}</h2>
+    <button type="button" class="btn btn-primary" onclick="location.href = '/add-branch';">Add a Branch</button>
     <button type="button" class="btn btn-primary" onclick="location.href = '/edit-shop';">Add a Shop</button>
     <button type="button" class="btn btn-primary" onclick="location.href = '/edit-warehouse';">Add a Warehouse</button>
-
+    <button type="button" class="btn btn-primary" onclick="location.href = '/all-employees';">View All Employees</button>
     <!-- Table to display the current list of shops or warehouse-->
     <table class="table table-striped">
         <tr>
@@ -23,8 +23,8 @@
         </tr>
         {% for store in all_stores %}
             <tr>
-                <td>{{store.s_id}}</td>
-                <td>{{store.b_id}}</td>
+                <td>{{store.0}}</td>
+                <td>{{store.1}}</td>
                 <td>Shop</td>
                 <td><button class="btn btn-primary" onclick="location.href = '/modify-stock';">Modify Stock</button></td>
                 <td><button class="btn btn-primary" onclick="location.href = '/branchpage';">Edit Shop Details</button></td>
@@ -32,8 +32,8 @@
         {% endfor %}
         {% for warehouse in all_warehouses %}
         <tr>
-            <td>{{warehouse.w_id}}</td>
-            <td>{{warehouse.b_id}}</td>
+            <td>{{warehouse.0}}</td>
+            <td>{{warehouse.1}}</td>
             <td>Warehouse</td>
             <td><button class="btn btn-primary" onclick="location.href = '/modify-stock';">Modify Stock</button></td>
             <td><button class="btn btn-primary" onclick="location.href = '/branchpage';">Edit Warehouse Details</button></td>

@@ -1,0 +1,40 @@
+{% extends "all/base.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+<div>
+    <!-- Display the list of employees-->
+    <button type="button" class="btn btn-primary btn-lg  my-3" onclick="location.href = '/add-emp';" method="post">Add Employee</button>
+    <table class="table table-striped col-md-6">
+        <tr>
+            <th scope="col-1">Employee ID</th>
+            <th scope="col-1">Branch ID</th>
+            <th scope="col-2">Name</th>
+            <th scope="col-2">Phone Number</th>
+            <th scope="col-1">Department</th>
+            <th scope="col-1">Date of Birth</th>
+            <th scope="col-1">Salary</th>
+            <th scope="col-2">Email</th>
+            <th scope="col-1">Edit</th>
+        </tr>
+        {% for emp in all_emps %}
+            <tr>
+                <td scope="col-1">{{emp.emp_id}}</td>
+                <td scope="col-1">{{emp.b_id}}</td>
+                <td scope="col-2">{{emp.emp_name}}</td>
+                <td scope="col-2">{{emp.emp_phone_no}}</td>
+                <td scope="col-1">{{emp.department}}</td>
+                <td scope="col-1">{{emp.dob}}</td>
+                <td scope="col-1">{{emp.salary}}</td>
+                <td scope="col-2">{{emp.emp_email}}</td>
+                <td scope="col-1"><button type="button" class="btn btn-primary btn-lg  my-3" onclick="location.href = '/edit-emp/{{emp.emp_id}}';" method="post">Edit Employee</button></td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>    
+
+{% endblock %}
+        

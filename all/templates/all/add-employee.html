@@ -8,30 +8,30 @@
     <div class="shop-details">
         <form class="col-md-4 offset-md-4 mt-5 border p-3" method="post">
             {% csrf_token %}
-            <h4 class="pb-3">Edit Employee Details</h4>
+            <h4 class="pb-3">Add Employee Details</h4>
             <label for="emp-id" class="form-label">Emp ID:</label>
-            <input type="text" id="emp-id" name="emp-id"class="form-control" value="{{emp_details.emp_id}}" disabled>
+            <input type="text" id="emp-id" name="emp-id"class="form-control" value="{{emp_id}}">
             <label for="b_id" class="form-label">Branch ID:</label>
             <select class="form-select" id="branch" name="branch">
-                <option value="{{emp_details.b_id}}" selected>{{emp_details.b_id}}</option>
+                <option selected>Select One of the Branch IDs</option>
                 {% for branch in company_branches %}
                     <option value="{{branch}}">{{branch}}</option>
                 {% endfor %}
             </select>
             <label for="ename" class="form-label">Employee Name:</label>
-            <input type="text" id="ename" name="ename" class="form-control" value="{{emp_details.emp_name}}">
+            <input type="text" id="ename" name="ename" class="form-control" value="">
             <label for="emp-phone-num" class="form-label">Employee Phone No:</label>
-            <input type="text" id="emp-phone-num" name="emp-phone-num" class="form-control" value="{{emp_details.emp_phone_no}}">
+            <input type="text" id="emp-phone-num" name="emp-phone-num" class="form-control" value="">
             <label for="emp-department" class="form-label">Department:</label>
-            <input type="text" id="emp-department" name="emp-department" class="form-control" value="{{emp_details.department}}">
+            <input type="text" id="emp-department" name="emp-department" class="form-control" value="">
             <label for="emp-dob" class="form-label">Employee Date of Birth:</label>
-            <input type="date" id="emp-dob" name="emp-dob" class="form-control" value="" disabled>
+            <input type="date" id="emp-dob" name="emp-dob" class="form-control" value="">
             <label for="emp-salary" class="form-label">Salary:</label>
-            <input type="text" id="emp-salary" name="emp-salary" class="form-control" value="{{emp_details.salary}}">
+            <input type="text" id="emp-salary" name="emp-salary" class="form-control" value="">
             <label for="emp-email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="emp-email" name="emp-email" aria-describedby="emailHelp" value="{{emp_details.emp_email}}" disabled>
+            <input type="email" class="form-control" id="emp-email" name="emp-email" aria-describedby="emailHelp">
             <label for="emp-pwd" class="form-label">Password</label>
-            <input type="password" class="form-control" id="emp-pwd" name="emp-pwd" disabled>
+            <input type="password" class="form-control" id="emp-pwd" name="emp-pwd">
 
             <button type="submit" class="btn btn-success mt-3 col-md-2 offset-md-5">Save</button>
         </form>
