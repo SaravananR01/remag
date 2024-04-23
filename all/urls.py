@@ -10,7 +10,6 @@ urlpatterns = [
     path("signupcus", views.cus_signup, name="signupcus"),
     path("companypage", views.company_page, name="companypage"),
     path("all-employees",views.all_emps,name="all-emps"),
-    path("branchpage", views.branch_page, name="branchpage"),
     path("add-emp", views.add_emp, name="add-emp"),
     path("edit-emp/<str:emp_id>", views.edit_emp, name="edit-emp"),
     path("add-branch", views.add_branch, name="add-branch"),
@@ -28,5 +27,7 @@ urlpatterns = [
     path("warehouse-form",views.changewarehouse,name="warehouse-form"),
     path("signupcus", views.cus_signup, name="signupcus"),
     path("companypage", views.company_page, name="companypage"),
-    path("logout",views.logout,name="logout")
+    path("logout",views.logout,name="logout"),
+    path("branch/<str:b_id>",views.branch_page,name="branchpage"),
+    path("delete-branch/<str:b_id>",views.delete_branch,name="deletebranch")
 ]

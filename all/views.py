@@ -2,22 +2,81 @@ from django.shortcuts import render,redirect
 from .models import *
 from django.contrib.auth.hashers import check_password,make_password
 from django.http import HttpResponseRedirect
-from django.urls import reverse
 from django.contrib.auth.password_validation import validate_password
 import random,bcrypt,datetime,time
 
+'''
+c_id              C   Company
+b_id              B   Branch
+s_id              S   Store
+w_id              W   Warehouse
+emp_id            E   Emp
+cus_id            U   User
+t_id              T   Transaction
+o_id              O   Order
+'''
 
-def gen_id():
-    chars=[chr(x) for x in range (65,91)]
-    nums=[chr(x) for x in range (48,58)]
-    return random.choice(chars)+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
+chars=[chr(x) for x in range (65,91)]
+nums=[chr(x) for x in range (48,58)]
+
+def gen_c_id():
+    code="C"+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
+    while len(Company.objects.filter(c_id=code))>0:
+        code="C"+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
+    return code
+
+def gen_b_id():
+    code="B"+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
+    while len(Branch.objects.filter(b_id=code))>0:
+        code="B"+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
+    return code
+
+def gen_s_id():
+    code="S"+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
+    while len(Store.objects.filter(s_id=code))>0:
+        code="S"+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
+    return code
+
+def gen_w_id():
+    code="W"+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
+    while len(Warehouse.objects.filter(w_id=code))>0:
+        code="W"+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
+    return code
+
+def gen_e_id():
+    code="E"+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
+    while len(Employee.objects.filter(emp_id=code))>0:
+        code="E"+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
+    return code
+
+def gen_u_id():
+    code="U"+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
+    while len(Customers.objects.filter(cus_id=code))>0:
+        code="U"+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
+    return code
+
+def gen_t_id():
+    code="T"+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
+    while len(Transaction.objects.filter(t_id=code))>0:
+        code="T"+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
+    return code
+
+def gen_o_id():
+    code="O"+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
+    while len(Orders.objects.filter(o_id=code))>0:
+        code="O"+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
+    return code
+
+
 
 def check_password(password,hashed_password):
-    
     return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
 
 def home(request):
-    return render(request, "all/home.html",{})
+    context={}
+    if 'email' in context:
+        context['email']=request.session['email']
+    return render(request, "all/home.html",context)
 
 def company_login(request):
     context={}
@@ -114,7 +173,7 @@ def company_signup(request):
                     context['error']="Please use a stronger password. "+" ".join(e)
                 else:
                     new_comp=Company.objects.create(
-                        c_id=gen_id(),
+                        c_id=gen_c_id(),
                         c_name=c_name,
                         c_phone=c_phone,
                         c_address=c_addr,
@@ -156,7 +215,7 @@ def cus_signup(request):
                         context['error']="Please use a stronger password. "+" ".join(e)
                     else:
                         new_comp=Customers.objects.create(
-                            cus_id=gen_id(),
+                            cus_id=gen_u_id(),
                             cus_name=cus_name,
                             cus_join_date=datetime.date.today(),
                             cus_points=0,
@@ -173,54 +232,50 @@ def cus_signup(request):
 def company_page(request):
     context = {}
     if 'company' in request.session:
-        user = Company.objects.filter(c_id=request.session['company'])
-        company=Company.objects.get(pk=request.session['company'])
-        if user.exists():
-            context['company_id'] = company.c_id
-            context['company_name'] = company.c_name
-            context['email'] = request.session['email']
-            company_branches = Branch.objects.filter(company=request.session['company'])
-            all_stores = []
-            all_warehouses = []
-
-            for branch in company_branches:
-                stores = Store.objects.filter(branch=branch)
-                warehouses = Warehouse.objects.filter(branch=branch)
-                all_stores.extend(stores)
-                all_warehouses.extend(warehouses)
-            context['all_stores'] = all_stores
-            context['all_warehouses'] = all_warehouses
-            return render(request, "all/company-page.html", context=context)
-
+        context['email']=request.session['email']
+        context['company']=Company.objects.get(pk=request.session['company'])
+        context['branches']=Branch.objects.filter(company=request.session['company'])
+        return render(request, "all/company-branches.html", context=context)
     return redirect("/logincompany")
 
 def add_branch(request):
     context = {}
     if 'company' in request.session:
-        user = Company.objects.filter(c_id=request.session['company'])
+        context['email']=request.session['email']
         company=Company.objects.get(pk=request.session['company'])
-        if user.exists():
-            b_id=gen_id()
-            context['branch_id']=b_id
-            context['company_id']=company.c_id
-            if request.method == 'POST':
+        b_id=gen_b_id()
+        context['branch_id']=b_id
+        context['company_id']=company.c_id
+        if request.method == 'POST':
                 b_address=request.POST.get('address')
                 b_phone_no=request.POST.get('phone-no')
-                new_branch=Branch.objects.create(
-                    b_id=b_id,
-                    company=company,
-                    b_address=b_address,
-                    b_phone_no=b_phone_no
-                )
-                new_branch.save()
-                return redirect("/companypage")
-            return render(request, "all/add-branch.html", context=context)
+                if (not b_phone_no.isdigit()) or (len(b_phone_no)!=10):
+                    context['error']="Invalid phone number."
+                else:
+                    new_branch=Branch.objects.create(
+                        b_id=b_id,
+                        company=company,
+                        b_address=b_address,
+                        b_phone_no=b_phone_no
+                    )
+                    new_branch.save()
+                    return redirect("/companypage")
+        return render(request, "all/add-branch.html", context=context)
     return redirect("/logincompany")
 
-def branch_page(request):
-    all_emps=Employee.objects.all() 
-    url=reverse("edit")
-    return render(request,"all/edit-branch.html",{'all_emps':all_emps,'url':url})
+def branch_page(request,b_id):
+    context = {}
+    if 'company' in request.session:
+        context['email']=request.session['email']
+        context['company']=Company.objects.get(pk=request.session['company'])
+
+    return render(request,"all/company-page.html",context)
+
+def delete_branch(request,b_id):
+    if 'company' in request.session:
+        branch=Branch.objects.get(b_id=b_id)
+        branch.delete()
+    return redirect("/companypage")
 
 
 def add_emp(request):
@@ -233,7 +288,7 @@ def add_emp(request):
             all_branches.append(branch.b_id)
         context['company_branches']=all_branches
         if user.exists():
-                emp_id=gen_id()
+                emp_id=gen_e_id()
                 context['emp_id']=emp_id
                 if request.method == 'POST':
                     branch_id=request.POST.get('branch')
