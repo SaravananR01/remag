@@ -1,0 +1,19 @@
+{% extends "all/base.html" %}
+
+{% block title %}
+    Delete {{type}}
+{% endblock %}
+
+{% block content %}
+<div>
+    <form method="POST">
+        {% csrf_token %}
+        <h1> Are you sure you want to delete {{type}} with {{type}} id {{id}}?</h1>
+        <h1><button class="btn btn-primary" type="submit">Sure</button></h1>
+    </form>
+    <h1><button class="btn btn-primary" type="button" onclick="location.href = '/{{redirect}}';">Cancel</button></h1>
+
+</div>    
+
+{% endblock %}
+        

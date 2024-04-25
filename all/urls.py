@@ -29,5 +29,9 @@ urlpatterns = [
     path("companypage", views.company_page, name="companypage"),
     path("logout",views.logout,name="logout"),
     path("branch/<str:b_id>",views.branch_page,name="branchpage"),
-    path("delete-branch/<str:b_id>",views.delete_branch,name="deletebranch")
+    path("delete-branch/<str:b_id>",views.delete_branch,name="deletebranch"),
+    path("add-shop/<str:b_id>",views.add_shop,name="add-shop"),
+    path("add-warehouse/<str:b_id>",views.add_warehouse,name="add-warehouse"),
+    path("delete-store/<str:b_id>/<str:s_id>",views.delete_shop,name="delete-shop"),
+    path("delete-warehouse/<str:b_id>/<str:w_id>",views.delete_warehouse,name="delete-warehouse"),
 ]

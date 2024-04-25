@@ -28,12 +28,10 @@ class Branch(models.Model):
 class Warehouse(models.Model):
     w_id=models.CharField(primary_key=True,max_length=5)
     branch=models.ForeignKey(Branch,on_delete=models.CASCADE)
-    w_admin_id=models.CharField(null=True,max_length=5)
 
 class Store(models.Model):
     s_id=models.CharField(primary_key=True,max_length=5)
     branch=models.ForeignKey(Branch,on_delete=models.CASCADE)
-    s_admin_id=models.CharField(null=True,max_length=5)
 
 class W_Products(models.Model):
     p_id=models.CharField(primary_key=True,max_length=5)

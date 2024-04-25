@@ -73,6 +73,8 @@ def check_password(password,hashed_password):
     return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
 
 def home(request):
+    request.session.clear()
+    request.session.flush()
     context={}
     if 'email' in context:
         context['email']=request.session['email']
@@ -268,13 +270,51 @@ def branch_page(request,b_id):
     if 'company' in request.session:
         context['email']=request.session['email']
         context['company']=Company.objects.get(pk=request.session['company'])
-
+        context['branch']=Branch.objects.get(pk=b_id)
+        context['stores']=Store.objects.filter(branch=context['branch'])
+        context['warehouses']=Warehouse.objects.filter(branch=context['branch'])
     return render(request,"all/company-page.html",context)
 
 def delete_branch(request,b_id):
+    context={}
     if 'company' in request.session:
-        branch=Branch.objects.get(b_id=b_id)
-        branch.delete()
+        context['email']=request.session['email']
+        context['id']=b_id
+        context['type']="branch"
+        context['redirect']="companypage"
+        if request.method == 'POST':
+            branch=Branch.objects.get(b_id=b_id)
+            branch.delete()
+            return redirect("/companypage")
+        return render(request,"all/delete-misc.html",context)
+    return redirect("/companypage")
+
+def delete_shop(request,b_id,s_id):
+    context={}
+    if 'company' in request.session:
+        context['email']=request.session['email']
+        context['id']=s_id
+        context['type']="store"
+        context['redirect']=f"branch/{b_id}"
+        if request.method == 'POST':
+            store=Store.objects.get(s_id=s_id)
+            store.delete()
+            return redirect(f"/branch/{b_id}")
+        return render(request,"all/delete-misc.html",context)
+    return redirect("/companypage")
+
+def delete_warehouse(request,b_id,w_id):
+    context={}
+    if 'company' in request.session:
+        context['email']=request.session['email']
+        context['id']=w_id
+        context['type']="warehouse"
+        context['redirect']=f"branch/{b_id}"
+        if request.method == 'POST':
+            warehouse=Warehouse.objects.get(w_id=w_id)
+            warehouse.delete()
+            return redirect(f"/branch/{b_id}")
+        return render(request,"all/delete-misc.html",context)
     return redirect("/companypage")
 
 
@@ -292,10 +332,11 @@ def add_emp(request):
                 context['emp_id']=emp_id
                 if request.method == 'POST':
                     branch_id=request.POST.get('branch')
-                    branch_id = branch_id[branch_id.find("(")+1:branch_id.find(")")]
                     branch=Branch.objects.get(b_id=branch_id)
                     ename = request.POST.get('ename')
                     emp_phone_num = request.POST.get('emp-phone-num')
+                    #ADD PHONE NUMBER AND VALIDITY CHECKS 
+                    # MAKE IT STORE AND WAREHOUSE ID
                     emp_department = request.POST.get('emp-department')
                     emp_dob = request.POST.get('emp-dob')
                     emp_salary = request.POST.get('emp-salary')
@@ -312,7 +353,7 @@ def add_emp(request):
                         emp_email=emp_email,
                         emp_password=emp_pwd
                     )   
-                    return render(request, "all/add-employee.html", context=context)
+                    return redirect('/add-employees')
                 else:
                     return render(request, "all/add-employee.html", context=context)
     return redirect('/logincompany')
@@ -366,7 +407,29 @@ def all_emps(request):
             context['all_emps']=all_emps
             return render(request,"all/all-employees.html",context=context)
     return redirect("/logincompany")
-    
+
+def add_shop(request,b_id):
+    context={}
+    if 'company' in request.session:
+        new_s_id=gen_s_id()
+        Store.objects.create(
+            branch=Branch.objects.get(b_id=b_id),
+            s_id=new_s_id,
+        )
+        return redirect(f'/branch/{b_id}')
+    return redirect('/')
+
+def add_warehouse(request,b_id):
+    context={}
+    if 'company' in request.session:
+        new_w_id=gen_w_id()
+        Warehouse.objects.create(
+            branch=Branch.objects.get(b_id=b_id),
+            w_id=new_w_id,
+        )
+        return redirect(f'/branch/{b_id}')
+    return redirect('/')
+
 def edit_shop(request):
     return render(request,"all/edit-shop.html",{})
 
