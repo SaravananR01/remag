@@ -1,27 +1,56 @@
 {% extends "all/base.html" %}
 
 {% block title %}
-    Home
+    Create Transaction
 {% endblock %}
 
 {% block content %}
+    <button type="button" class="btn btn-primary btn-sm mb-2" onclick="location.href = '/emp-page';">Go Back</button>
     <h4 class="my-3">Transaction</h4>
-    <button type="button" class="btn btn-primary btn-lg mb-2">Get Customer ID</button>
+    <h4 class="my-3">{{t_id}}</h4>
     
+    <button type="button" class="btn btn-primary btn-sm mb-2" onclick="location.href = '/add-trn-itm';">Add Item</button>
     <div class="row">
-        <table class="table table-striped col-md-8 my-5">
+        <table class="table table-striped col-md-8 ">
             <tr>
                 <th scope="col-md-1">Item ID</th>
-                <th scope="col-md-2">Item Name Name</th>
-                <th scope="col-md-2">Cost</th>
+                <th scope="col-md-2">Item Name</th>
+                <th scope="col-md-2">Price</th>
+                <th scope="col-md-1">Quantity</th>
+                <th scope="col-md-2">Total Cost</th>
                 <th scope="col-md-1">Delete</th>
-                <th scope="col-md-1">Modify Quantity</th>
             </tr>
+            {% for item in items %}
+            <tr>
+                <td scope="col-md-1">{{item.id}}</td>
+                <td scope="col-md-2">{{item.name}}</td>
+                <td scope="col-md-1">{{item.price}}</td>
+                <td scope="col-md-1">{{item.qty}}</td>
+                <td scope="col-md-2">{{item.cost}}</td>
+                <td scope="col-md-1"><button onclick="location.href = '/del-item-trx/{{item.id}}';"> Delete?</button></td>
+            </tr>
+            {% endfor %}
         </table>
     </div>
 
-    <button type="button" class="btn btn-primary btn-sm mb-2">Add Item</button>
-
+    <hr class="border-primary border-3">
+    <div class="row">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="col">
+                <label class="form-label">Enter customer id-</label>
+                <input type="text" name="cus_id" class="form-control"></input>
+                <button type="submit" class="btn btn-primary btn-lg mb-2">Complete Transaction</button>
+                <div class="error text-danger">{{error}}</div>
+            </div>
+            <div class="col"></div>
+            <div class="col"></div>
+        </form>
+        
+        
+    </div>
+    
+    
     
 {% endblock %}
         
