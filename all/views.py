@@ -509,18 +509,20 @@ def modify_stock(request,b_id,id):
             if (id[0]=="S"):
                 stores=Store.objects.filter(branch=branch)
                 for store in stores:
-                    s_products=S_Products.objects.filter(s_id=store)
-                    for product in s_products:
-                        all_products.append(product)
-                    context['all_products']=all_products
+                    if store.s_id==id:
+                        s_products=S_Products.objects.filter(s_id=id)
+                        for product in s_products:
+                            all_products.append(product)
+                        context['all_products']=all_products
 
             elif (id[0]=="W"):
                 warehouses=Warehouse.objects.filter(branch=branch)
                 for warehouse in warehouses:
-                    w_products=W_Products.objects.filter(w_id=warehouse)
-                    for product in w_products:
-                        all_products.append(product)
-                    context['all_products']=all_products
+                    if warehouse.w_id==id:
+                        w_products=W_Products.objects.filter(w_id=id)
+                        for product in w_products:
+                            all_products.append(product)
+                        context['all_products']=all_products
             return render(request,"all/modify_stock.html",context)
     if 'emp' in request.session:
         user=Employee.objects.filter(emp_id=request.session['emp'])
@@ -533,18 +535,20 @@ def modify_stock(request,b_id,id):
             if (id[0]=="S"):
                 stores=Store.objects.filter(branch=branch)
                 for store in stores:
-                    s_products=S_Products.objects.filter(s_id=store)
-                    for product in s_products:
-                        all_products.append(product)
-                    context['all_products']=all_products
+                    if store.s_id==id:
+                        s_products=S_Products.objects.filter(s_id=id)
+                        for product in s_products:
+                            all_products.append(product)
+                        context['all_products']=all_products
 
             elif (id[0]=="W"):
                 warehouses=Warehouse.objects.filter(branch=branch)
                 for warehouse in warehouses:
-                    w_products=W_Products.objects.filter(w_id=warehouse)
-                    for product in w_products:
-                        all_products.append(product)
-                    context['all_products']=all_products
+                    if warehouse.w_id==id:
+                        w_products=W_Products.objects.filter(w_id=id)
+                        for product in w_products:
+                            all_products.append(product)
+                        context['all_products']=all_products
             return render(request,"all/modify_stock.html",context)
     return redirect("/")
 
