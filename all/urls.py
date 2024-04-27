@@ -17,6 +17,7 @@ urlpatterns = [
     path("emp-page", views.emp_page, name="emp-page"),
     path("modify-item-details", views.modify_item_details, name="modify-item-details"),
     path("modify-stock", views.modify_stock, name="modify-stock"),
+    path("modify-stock-emp", views.modify_stock_emp, name="modify-stock-emp"),
     path("transaction-details/<str:t_id>", views.transaction_details, name="transaction-details"),
     path("transaction", views.transaction, name="transaction"),
     path("add-item", views.add_item, name="add-item"),
