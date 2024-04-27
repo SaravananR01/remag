@@ -442,10 +442,23 @@ def emp_page(request):
         user = Employee.objects.filter(emp_id=request.session['emp'])
         if len(user)>0:
             context['email']=request.session['email']
-            #logic
+            context['emp']=user[0]
+            context['branch']=user[0].b_id
             return render(request,"all/employee-page.html",context=context)
     return redirect("/loginemp")
     
+def modify_stock_emp(request):
+    context={}
+    if 'emp' in request.session:
+        user = Employee.objects.filter(emp_id=request.session['emp'])
+        if len(user)>0:
+            context['email']=request.session['email']
+            context['emp']=user[0]
+            context['branch']=user[0].b_id
+            context['stores']=Store.objects.filter(branch=context['branch'])
+            context['warehouses']=Warehouse.objects.filter(branch=context['branch'])
+            return render(request,"all/modify-stock-emp.html",context=context)
+    return redirect("/loginemp")
 
 def modify_item_details(request):
     return render(request,"all/modify_item_details.html",{})
@@ -496,7 +509,7 @@ def transaction_details(request,t_id):
     return redirect('/logincus')
 
 
-
+#???
 def changeshop(request):
     if request.method == 'POST':
         s_id = request.POST.get('id')
@@ -525,3 +538,5 @@ def logout(request):
     request.session.clear()
     request.session.flush()
     return redirect('/')
+
+

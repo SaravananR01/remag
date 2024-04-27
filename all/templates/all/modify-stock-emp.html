@@ -1,0 +1,34 @@
+{% extends "all/base.html" %}
+
+{% block title %}
+    Modify Stock
+{% endblock %}
+
+{% block content %}
+    <h3>EMP_ID: {{emp.emp_id}}</h3>
+    <h3>EMP_Name: {{emp.emp_name}}</h3>
+    <h3>Branch_ID: {{branch.b_id}}</h3>
+    <table class="table table-striped">
+        <tr>
+            <th scope="col">S_ID/W_ID</th>
+            <th scope="col">Shop/Warehouse</th>
+            <th scope="col">Modify Items</th>
+        </tr>
+        {% for store in stores %}
+            <tr>
+                <td>{{store.s_id}}</td>
+                <td>Shop</td>
+                <td><button class="btn btn-primary" onclick="location.href = '/modify-stock';">Modify Stock</button></td>
+            </tr>
+        {% endfor %}
+        {% for warehouse in warehouses %}
+        <tr>
+            <td>{{warehouse.w_id}}</td>
+            <td>Warehouse</td>
+            <td><button class="btn btn-primary" onclick="location.href = '/modify-stock';">Modify Stock</button></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
+        
