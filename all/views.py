@@ -14,6 +14,7 @@ emp_id            E   Emp
 cus_id            U   User
 t_id              T   Transaction
 o_id              O   Order
+p_id              P   Product
 '''
 
 chars=[chr(x) for x in range (65,91)]
@@ -67,7 +68,11 @@ def gen_o_id():
         code="O"+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
     return code
 
-
+def gen_p_id():
+    code="P"+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
+    while len(S_Products.objects.filter(p_id=code))>0 or len(W_Products.objects.filter(p_id=code))>0:
+        code="P"+random.choice(nums)+random.choice(nums)+random.choice(chars)+random.choice(chars)
+    return code
 
 def check_password(password,hashed_password):
     return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
@@ -475,6 +480,7 @@ def modify_stock_emp(request):
     context={}
     if 'emp' in request.session:
         user = Employee.objects.filter(emp_id=request.session['emp'])
+        context['email']=request.session['email']
         if len(user)>0:
             context['email']=request.session['email']
             context['emp']=user[0]
@@ -487,14 +493,176 @@ def modify_stock_emp(request):
 def modify_item_details(request):
     return render(request,"all/modify_item_details.html",{})
 
-def modify_stock(request):
-    return render(request,"all/modify_stock.html",{})
+def modify_stock(request,b_id,id):
+    context={}
+    if 'company' in request.session:
+        user=Company.objects.filter(c_id=request.session['company'])
+        if user.exists():
+            context['email']=request.session['email']
+            context['id']=id
+            context['b_id']=b_id
+            all_products=[]
+            branch=Branch.objects.get(pk=b_id)
+            if (id[0]=="S"):
+                stores=Store.objects.filter(branch=branch)
+                for store in stores:
+                    s_products=S_Products.objects.filter(s_id=store)
+                    for product in s_products:
+                        all_products.append(product)
+                    context['all_products']=all_products
+
+            elif (id[0]=="W"):
+                warehouses=Warehouse.objects.filter(branch=branch)
+                for warehouse in warehouses:
+                    w_products=W_Products.objects.filter(w_id=warehouse)
+                    for product in w_products:
+                        all_products.append(product)
+                    context['all_products']=all_products
+            return render(request,"all/modify_stock.html",context)
+    if 'emp' in request.session:
+        user=Employee.objects.filter(emp_id=request.session['emp'])
+        if user.exists():
+            context['email']=request.session['email']
+            context['id']=id
+            context['b_id']=b_id
+            all_products=[]
+            branch=Branch.objects.get(pk=b_id)
+            if (id[0]=="S"):
+                stores=Store.objects.filter(branch=branch)
+                for store in stores:
+                    s_products=S_Products.objects.filter(s_id=store)
+                    for product in s_products:
+                        all_products.append(product)
+                    context['all_products']=all_products
+
+            elif (id[0]=="W"):
+                warehouses=Warehouse.objects.filter(branch=branch)
+                for warehouse in warehouses:
+                    w_products=W_Products.objects.filter(w_id=warehouse)
+                    for product in w_products:
+                        all_products.append(product)
+                    context['all_products']=all_products
+            return render(request,"all/modify_stock.html",context)
+    return redirect("/")
 
 def transaction(request):
     return render(request,"all/transaction.html",{})
 
-def add_item(request):
-    return render(request,"all/add_itm.html",{})
+def add_item(request,b_id,id):
+    context={}
+    if 'company' in request.session:
+        user=Company.objects.filter(c_id=request.session['company'])
+        if user.exists():
+            context['id']=id
+            context['email']=request.session['email']
+            p_id=gen_p_id()
+            print(p_id)
+            context['p_id']=p_id
+            if request.method=="POST":
+                p_name=request.POST.get("p_name")
+                p_manu=request.POST.get("p_manu")
+                price=request.POST.get("price")
+                m_date=request.POST.get("m_date")
+                e_date=request.POST.get("e_date")
+                quantity=request.POST.get("quantity")
+                branch=Branch.objects.get(pk=b_id)
+                if (id[0]=="S"):
+                    s_id=Store.objects.get(pk=id)
+                    S_Products.objects.create(
+                        p_id=p_id,
+                        s_id=s_id,
+                        p_name=p_name,
+                        p_manufacturer=p_manu,
+                        price=price,
+                        mfg_date=m_date,
+                        expiry_date=e_date,
+                        quantity=quantity
+                    )
+                elif (id[0]=="W"):
+                    w_id=Warehouse.objects.get(pk=id)
+                    W_Products.objects.create(
+                        p_id=p_id,
+                        w_id=w_id,
+                        p_name=p_name,
+                        p_manufacturer=p_manu,
+                        price=price,
+                        mfg_date=m_date,
+                        expiry_date=e_date,
+                        quantity=quantity
+                    )
+                return redirect("/modify-stock/"+b_id+"/"+id)
+            return render(request,"all/add_itm.html",context)    
+    return redirect("/")
+
+def add_item_emp(request,b_id,id):
+    context={}
+    if 'emp' in request.session:
+        user= Employee.objects.filter(emp_id=request.session['emp'])
+        if user.exists():
+            context['id']=id
+            context['email']=request.session['email']
+            p_id=gen_p_id()
+            print(p_id)
+            context['p_id']=p_id
+            if request.method=="POST":
+                p_name=request.POST.get("p_name")
+                p_manu=request.POST.get("p_manu")
+                price=request.POST.get("price")
+                m_date=request.POST.get("m_date")
+                e_date=request.POST.get("e_date")
+                quantity=request.POST.get("quantity")
+                branch=Branch.objects.get(pk=b_id)
+                if (id[0]=="S"):
+                    s_id=Store.objects.get(pk=id)
+                    S_Products.objects.create(
+                        p_id=p_id,
+                        s_id=s_id,
+                        p_name=p_name,
+                        p_manufacturer=p_manu,
+                        price=price,
+                        mfg_date=m_date,
+                        expiry_date=e_date,
+                        quantity=quantity
+                    )
+                elif (id[0]=="W"):
+                    w_id=Warehouse.objects.get(pk=id)
+                    W_Products.objects.create(
+                        p_id=p_id,
+                        w_id=w_id,
+                        p_name=p_name,
+                        p_manufacturer=p_manu,
+                        price=price,
+                        mfg_date=m_date,
+                        expiry_date=e_date,
+                        quantity=quantity
+                    )
+                return redirect("/modify-stock/"+b_id+"/"+id)
+            return render(request,"all/add_itm.html",context)    
+    return redirect("/loginemp")
+
+def delete_product(request,b_id,id,p_id):
+    context={}
+    if 'company' in request.session:
+        context['email']=request.session['email']
+        context['id']=p_id
+        context['type']="product"
+        context['redirect']="modify-stock/"+b_id+"/"+id
+        if request.method == 'POST':
+            if (id[0]=="S"):
+                store=Store.objects.get(pk=id)
+                products=S_Products.objects.filter(s_id=store)
+                for product in products:
+                    if product.p_id==p_id:
+                        product.delete()
+            elif (id[0]=="W"):
+                warehouse=Warehouse.objects.get(pk=id)
+                products=W_Products.objects.filter(w_id=warehouse)
+                for product in products:
+                    if product.p_id==p_id:
+                        product.delete()
+            return redirect("/modify-stock/"+b_id+"/"+id)
+        return render(request,"all/delete-misc.html",context)
+    return redirect("/companypage")
 
 def source_items(request):
     context={}

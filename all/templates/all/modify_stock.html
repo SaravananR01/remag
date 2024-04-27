@@ -5,9 +5,13 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container p-5">
+    <div class="container px-5">
         <div class="container p-2">
-            <button  class="btn btn-primary" onclick="location.href = '/add-item';">
+            <h3>ID: {{id}}</h3>
+            <a href="javascript:history.go(-1)" class="btn btn-primary">Back</a>
+            <br>
+            <br>
+            <button  class="btn btn-primary" onclick="location.href = '/add-item/{{b_id}}/{{id}}';">
                 ADD ITEM
             </button>
         </div>
@@ -18,22 +22,17 @@
                 <th class="col">ITEM_NAME</th>
                 <th class="col"></th>
             </tr>
-            <tr>
-                <td>123</td>
-                <td>Obama</td>
-                <td class="text-end">
-                    <button  class="btn btn-primary" >DELETE</button>
-                    <button  class="btn btn-primary" onclick="location.href = '/modify-item-details';">MODIFY</button>
-                </td>
-            </tr>
-            <tr>
-                <td>123</td>
-                <td>Obama</td>
-                <td class="text-end">
-                    <button  class="btn btn-primary">DELETE</button>
-                    <button  class="btn btn-primary" onclick="location.href = '/modify-item-details';">MODIFY</button>
-                </td>
-            </tr>
+            {% for item in all_products %}
+                <tr>
+                    <td>{{item.p_id}}</td>
+                    <td>{{item.p_name}}</td>
+                    <td class="text-end">
+                        <button  class="btn btn-primary" onclick="location.href = '/delete-product/{{b_id}}/{{id}}/{{item.p_id}}';">DELETE</button>
+                        <button  class="btn btn-primary" onclick="location.href = '/modify-item-details';">MODIFY</button>
+                    </td>
+                </tr>
+            {% endfor %}
+
         </table>
 
     </div>
