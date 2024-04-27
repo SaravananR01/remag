@@ -333,27 +333,51 @@ def add_emp(request):
                 if request.method == 'POST':
                     branch_id=request.POST.get('branch')
                     branch=Branch.objects.get(b_id=branch_id)
+                    employees=Employee.objects.filter(b_id=branch)
                     ename = request.POST.get('ename')
                     emp_phone_num = request.POST.get('emp-phone-num')
-                    #ADD PHONE NUMBER AND VALIDITY CHECKS 
-                    # MAKE IT STORE AND WAREHOUSE ID
                     emp_department = request.POST.get('emp-department')
                     emp_dob = request.POST.get('emp-dob')
                     emp_salary = request.POST.get('emp-salary')
                     emp_email = request.POST.get('emp-email')
                     emp_pwd = request.POST.get('emp-pwd')
-                    employee = Employee.objects.create(
-                        emp_id=emp_id, 
-                        b_id=branch, 
-                        emp_name=ename,
-                        emp_phone_no=emp_phone_num,
-                        department=emp_department,
-                        dob=emp_dob,
-                        salary=emp_salary,
-                        emp_email=emp_email,
-                        emp_password=emp_pwd
-                    )   
-                    return redirect('/add-employees')
+                    emp_cnfpass=request.POST.get('emp-cnf-pwd')
+                    emp_emails=[]
+                    for emp in employees:
+                        emp_emails.append(emp.emp_email)
+                    if emp_dob!="":
+                        emp_dob = datetime.datetime.strptime(emp_dob, '%Y-%m-%d').date()
+                    if emp_pwd!=emp_cnfpass:
+                        context['error']="PASSWORDS DO NOT MATCH!"
+                        return render(request, "all/add-employee.html", context=context)
+                    else:
+                        if ename=="" or emp_phone_num==""  or emp_dob=="" or emp_email=="" or emp_pwd=="" or emp_department=="" or emp_salary=="":
+                            context['error']="Blank Fields are not allowed."
+                        elif emp_dob.year>datetime.date.today().year or emp_dob.year<datetime.date.today().year-100:
+                            context['error']="Invalid date of birth."
+                        elif (not emp_phone_num.isdigit()) or (len(emp_phone_num)!=10):
+                            context['error']="Invalid phone number."
+                        elif (emp_email in emp_emails):
+                            context['error']="Email already exists."
+                        else:
+                            try:
+                                validate_password(emp_pwd)
+                            except Exception as e:
+                                context['error']="Please use a stronger password. "+" ".join(e)
+                            else:
+                                employee = Employee.objects.create(
+                                            emp_id=emp_id, 
+                                            b_id=branch, 
+                                            emp_name=ename,
+                                            emp_phone_no=emp_phone_num,
+                                            department=emp_department,
+                                            dob=emp_dob,
+                                            salary=emp_salary,
+                                            emp_email=emp_email,
+                                            emp_password=emp_pwd
+                                        )
+                                return redirect('/all-employees')
+                        return render(request, "all/add-employee.html", context=context) 
                 else:
                     return render(request, "all/add-employee.html", context=context)
     return redirect('/logincompany')
