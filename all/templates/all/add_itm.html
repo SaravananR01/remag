@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container p-5 text-center">
+    <!-- <div class="container p-5 text-center">
         <div class="row m-5">
             <div class="col-7"><input type="text" id="search_box" class="form-control"></div>
             <div class="col-5"><button class="btn btn-success justify-content-start">SEARCH</button></div>
@@ -18,18 +18,90 @@
                 <tr>
                     <td>
                         LLLL
-                        <!--onclick should add an item, make a function-->
+
                        <button  class="btn btn-primary" onclick="">ADD</button>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         LLLL
-                        <!--onclick should add an item, make a function-->
                         <button  class="btn btn-primary" onclick="">ADD</button>
                     </td>
                 </tr>
             </table>
         </div>
+    </div> -->
+    <a href="javascript:history.go(-1)" class="btn btn-primary">Back</a>
+    <div class="container px-5 text-center">
+        <h3 class="p-4">ITEM DETAILS</h3>
+        <form class="row" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Store/Warehouse ID:</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="text" id="s_id" name="s_id" value="{{id}}" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Product ID</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="text" id="p_id" name="s_id" value="{{p_id}}" disabled>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Product Name</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="text" id="p_name" name="p_name">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Product Manufacturer</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="text" id="p_manu" name="p_manu">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Price</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="text" id="price" name="price">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Manufactured Date</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="date" id="m_date" name="m_date">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Expiry Date</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="date" id="e_date" name="e_date">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label class="m-1 form-label">Quantity</label>
+                </div>
+                <div class="col-9">
+                    <input class="m-1 form-control" type="text" id="quantity" name="quantity">
+                </div>
+            </div>
+            <button class="btn btn-success m-5" type="submit">SAVE</button>  
+        </form>
+
     </div>
 {% endblock %}

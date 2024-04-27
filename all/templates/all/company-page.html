@@ -23,7 +23,7 @@
             <tr>
                 <td>{{store.s_id}}</td>
                 <td>Shop</td>
-                <td><button class="btn btn-primary" onclick="location.href = '/modify-stock';">Modify Stock</button></td>
+                <td><button class="btn btn-primary" onclick="location.href = '/modify-stock/{{branch.b_id}}/{{store.s_id}}';">Modify Stock</button></td>
                 <td><button class="btn btn-primary" onclick="location.href = '/delete-store/{{branch.b_id}}/{{store.s_id}}';">Delete Shop</button></td>
             </tr>
         {% endfor %}
@@ -31,7 +31,7 @@
         <tr>
             <td>{{warehouse.w_id}}</td>
             <td>Warehouse</td>
-            <td><button class="btn btn-primary" onclick="location.href = '/modify-stock';">Modify Stock</button></td>
+            <td><button class="btn btn-primary" onclick="location.href = '/modify-stock/{{branch.b_id}}/{{warehouse.w_id}}';">Modify Stock</button></td>
             <td><button class="btn btn-primary" onclick="location.href = '/delete-warehouse/{{branch.b_id}}/{{warehouse.w_id}}';">Delete Warehouse</button></td>
         </tr>
         {% endfor %}
