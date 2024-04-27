@@ -6,6 +6,7 @@
 
 {% block content %}
     <div class="shop-details">
+        <a href="javascript:history.go(-1)" class="btn btn-primary">Back</a>
         <form class="col-md-4 offset-md-4 mt-5 border p-3" method="post">
             {% csrf_token %}
             <h4 class="pb-3">Add Employee Details</h4>
@@ -32,8 +33,12 @@
             <input type="email" class="form-control" id="emp-email" name="emp-email" aria-describedby="emailHelp">
             <label for="emp-pwd" class="form-label">Password</label>
             <input type="password" class="form-control" id="emp-pwd" name="emp-pwd">
+            <label for="emp-pwd" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" id="emp-cnf-pwd" name="emp-cnf-pwd">
 
             <button type="submit" class="btn btn-success mt-3 col-md-2 offset-md-5">Save</button>
+
+            <div class="error text-danger">{{error}}</div>
         </form>
     </div>
 {% endblock %}

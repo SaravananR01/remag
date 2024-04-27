@@ -5,12 +5,12 @@
 {% endblock %}
 
 {% block content %}
+    <a href="javascript:history.go(-1)" class="btn btn-primary">Back</a>
     <h3>Company ID: {{company.c_id}}</h3>
     <h3>Company Name: {{company.c_name}}</h3>
     <h3>Branch Name: {{branch.b_id}}</h3>
     <button type="button" class="btn btn-primary" onclick="location.href = '/add-shop/{{branch.b_id}}';">Add a Shop</button>
     <button type="button" class="btn btn-primary" onclick="location.href = '/add-warehouse/{{branch.b_id}}';">Add a Warehouse</button>
-    <button type="button" class="btn btn-primary" onclick="location.href = '/all-employees';">View All Employees</button>
     <!-- Table to display the current list of shops or warehouse-->
     <table class="table table-striped">
         <tr>
