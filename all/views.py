@@ -846,35 +846,8 @@ def transaction_details(request,t_id):
             return render(request,"all/transaction_details.html",context=context)
     return redirect('/logincus')
 
-
-#???
-def changeshop(request):
-    if request.method == 'POST':
-        s_id = request.POST.get('id')
-        b_id = request.POST.get('b_id')
-        s_admin_id = request.POST.get('admin_id')
-
-        branch = Branch.objects.get(pk=b_id)
-
-        store = Store.objects.create(s_id=s_id, b_id=branch, s_admin_id=s_admin_id)
-    return redirect('/companypage')
-
-def changewarehouse(request):
-    if request.method == 'POST':
-        w_id = request.POST.get('id')
-        b_id = request.POST.get('b_id')
-        w_admin_id = request.POST.get('admin_id')
-
-        branch = Branch.objects.get(pk=b_id)
-
-        warehouse = Warehouse.objects.create(w_id=w_id, b_id=branch, w_admin_id=w_admin_id)
-    return redirect('/companypage')
-
-    return render(request,"all/edit-branch.html",{})
-
 def logout(request):
     request.session.clear()
     request.session.flush()
     return redirect('/')
-
 
