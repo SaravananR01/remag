@@ -588,7 +588,8 @@ def add_transaction_item(request):
             else:
                 context['dummyitems']={}
             if request.method == 'POST':
-                items=S_Products.objects.filter(p_name__iregex=request.POST.get('item-name'))
+                valid_stores=Store.objects.filter(branch=user[0].b_id)
+                items=S_Products.objects.filter(p_name__iregex=request.POST.get('item-name'),s_id__in=valid_stores)
                 context['items']=items
         return render(request,"all/add-transaction-item.html",context)  
     return redirect("/loginemp")
