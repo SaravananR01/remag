@@ -1,0 +1,83 @@
+{% extends "all/base.html" %}
+
+{% block title %}
+    Add-Item
+{% endblock %}
+
+{% block content %}
+    <div class="blur" style="filter: blur(10px);">
+        <h4 class="my-3">Transaction</h4>
+        <h4 class="my-3">{{t_id}}</h4>
+        
+        <button type="button" class="btn btn-primary btn-sm mb-2" onclick="location.href = '/add-trn-itm';">Add Item</button>
+        <div class="row">
+            <table class="table table-striped col-md-8 ">
+                <tr>
+                    <th scope="col-md-1">Item ID</th>
+                    <th scope="col-md-2">Item Name</th>
+                    <th scope="col-md-2">Price</th>
+                    <th scope="col-md-1">Quantity</th>
+                    <th scope="col-md-2">Total Cost</th>
+                    <th scope="col-md-1">Delete</th>
+                </tr>
+                {% for item in dummyitems %}
+                <tr>
+                    <td scope="col-md-1">{{item.id}}</td>
+                    <td scope="col-md-2">{{item.name}}</td>
+                    <td scope="col-md-1">{{item.price}}</td>
+                    <td scope="col-md-1">{{item.qty}}</td>
+                    <td scope="col-md-2">{{item.cost}}</td>
+                    <td scope="col-md-1"><button onclick="location.href = '/del-item-trx/{{item.id}}';"> Delete?</button></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    
+        <hr class="border-primary border-3">
+        <div class="row">
+            <div class="col">
+                <label class="form-label">Enter customer id-</label>
+                <input type="text" name="c_id" class="form-control"></input>
+                <button type="button" class="btn btn-primary btn-lg mb-2">Complete Transaction</button>
+            </div>
+            <div class="col"></div>
+            <div class="col"></div>
+            
+        </div>
+    </div>
+    <div class="topbox" style="color:white;position:absolute;top: 25%;left:25%;background:rgb(40, 68, 192); padding:2%;">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row"></div>
+            <label>Enter Item Name</label><br>
+            <input type="text" name="item-name">
+            <button type="submit">Search</button>
+        </form>
+            <table style="border:solid 1px white;">
+                <tr>
+                    <th style="padding:6px;"> Item Name</th>
+                    <th> Item Stock</th>
+                    <th></th>
+                </tr>
+                {% for item in items %}
+                    <tr>
+                        <td>
+                            {{item.p_name}}
+                        </td>
+                        <td>
+                            {{item.quantity}}
+                        </td>
+                        <td>
+                            <input type="text" id="qty-{{item.p_id}}" value="1">
+                            <button onclick="location.href = '/add-item-trx/{{item.p_id}}/'+document.getElementById('qty-{{item.p_id}}').value;">Add Item</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+        </table>
+        
+    </div>
+    
+    
+    
+{% endblock %}
+        

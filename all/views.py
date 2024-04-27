@@ -444,6 +444,9 @@ def emp_page(request):
             context['email']=request.session['email']
             context['emp']=user[0]
             context['branch']=user[0].b_id
+            request.session.pop('t_id',None)
+            request.session.pop('trx_items',None)
+            request.session.modified=True
             return render(request,"all/employee-page.html",context=context)
     return redirect("/loginemp")
     
@@ -467,26 +470,158 @@ def modify_stock(request):
     return render(request,"all/modify_stock.html",{})
 
 def transaction(request):
-    return render(request,"all/transaction.html",{})
+    context={}
+    if 'emp' in request.session:
+        user = Employee.objects.filter(emp_id=request.session['emp'])
+        if len(user)>0:
+            context['email']=request.session['email']
+            context['total_cost']=0
+            if 't_id'  not in request.session:
+                request.session['t_id']=gen_t_id()
+                request.session.modified=True
+            context['t_id']=request.session['t_id']
+            if 'trx_items' in request.session:
+                class TrxItm():
 
-def add_item(request):
-    return render(request,"all/add_itm.html",{})
+                    def __init__(self,id,name,price,qty):
+                        self.id=id
+                        self.name=name
+                        self.price=price
+                        self.qty=qty
+                        self.cost=price*qty
+
+
+                context['items']=[]
+
+                for item in request.session['trx_items']:
+                    prod=S_Products.objects.get(pk=item)
+                    itm=TrxItm(prod.p_id,prod.p_name,prod.price,request.session['trx_items'][item])
+                    context['items'].append(itm)
+                    context['total_cost']+=itm.cost
+            else:
+                context['items']={}
+            if request.method == 'POST':
+                cus_id=request.POST['cus_id']
+                cus=Customers.objects.filter(cus_id=cus_id)
+                print(cus_id,cus)
+                if len(cus)!=1:
+                    context['error']="Invalid customer id!"
+                else:
+                    if 'trx_items' in request.session and len(context['items'])>0:
+                        new_trx=Transaction.objects.create(
+                            t_id=request.session['t_id'],
+                            emp_id=user[0],
+                            date_of_transaction=datetime.datetime.now(),
+                            cus_id=cus[0],
+                            total_cost=context['total_cost'],
+                        )
+                        for item in context['items']:
+                            sprod=S_Products.objects.get(pk=item.id)
+                            sprod.quantity-=item.qty
+                            sprod.save()
+                            new_odr=Orders.objects.create(
+                                o_id=gen_o_id(),
+                                t_id=new_trx,
+                                p_id=sprod,
+                                quantity=item.qty,
+                            )
+                        return redirect('/emp-page')
+                    else:
+                        context['error']="Add some items first."
+        return render(request,"all/transaction.html",context)
+    return redirect("/loginemp")
+
+
+def add_transaction_item(request):
+    context={}
+    if 'emp' in request.session:
+        user = Employee.objects.filter(emp_id=request.session['emp'])
+        if len(user)>0:
+            context['email']=request.session['email']
+            context['total_cost']=0
+            if 't_id'  not in request.session:
+                request.session['t_id']=gen_t_id()
+                request.session.modified=True
+            context['t_id']=request.session['t_id']
+            if 'trx_items' in request.session:
+                class TrxItm():
+
+                    def __init__(self,id,name,price,qty):
+                        self.id=id
+                        self.name=name
+                        self.price=price
+                        self.qty=qty
+                        self.cost=price*qty
+
+
+                context['dummyitems']=[]
+
+                for item in request.session['trx_items']:
+                    prod=S_Products.objects.get(pk=item)
+                    itm=TrxItm(prod.p_id,prod.p_name,prod.price,request.session['trx_items'][item])
+                    context['dummyitems'].append(itm)
+                    context['total_cost']+=itm.cost
+            else:
+                context['dummyitems']={}
+            if request.method == 'POST':
+                items=S_Products.objects.filter(p_name__iregex=request.POST.get('item-name'))
+                context['items']=items
+        return render(request,"all/add-transaction-item.html",context)  
+    return redirect("/loginemp")
+
+def add_item_trx(request,p_id,qty):
+    if 'emp' in request.session:
+        user = Employee.objects.filter(emp_id=request.session['emp'])
+        if len(user)>0:
+            prod=S_Products.objects.get(pk=p_id)
+            if 'trx_items' in request.session:
+                    if p_id in request.session['trx_items']:
+                        if qty<0 or qty+request.session['trx_items'][p_id]>prod.quantity:
+                            pass
+                        else:
+                            request.session['trx_items'][p_id]+=qty
+                    else:
+                        if qty<0 or qty>prod.quantity:
+                            pass
+                        else:
+                            request.session['trx_items'][p_id]=qty
+            else:
+                if qty<0 or qty>prod.quantity:
+                    request.session['trx_items']={}
+                else:
+                    request.session['trx_items']={p_id:qty}
+    request.session.modified=True
+    return redirect('/transaction')
+
+def del_item_trx(request,p_id):
+    if 'emp' in request.session:
+        user = Employee.objects.filter(emp_id=request.session['emp'])
+        if len(user)>0:
+            prod=S_Products.objects.get(pk=p_id)
+            if 'trx_items' in request.session:
+                    if p_id in request.session['trx_items']:
+                        request.session['trx_items'].pop(p_id)
+            else:
+                    request.session['trx_items']={}
+    request.session.modified=True
+    return redirect('/transaction')
 
 def source_items(request):
     context={}
     search_str=""
     if request.method == 'POST':
         search_str=request.POST.get('search_box')
-    items=S_Products.objects.filter(p_name__regex=search_str)
-    context['items']=items
+        items=S_Products.objects.filter(p_name__iregex=search_str)
+        context['items']=items
     return render(request,"all/source_items.html",context=context)
 
-def customerpage(request,):
+def customerpage(request):
     context={}
     if 'cus' in request.session:
         user = Customers.objects.filter(cus_id=request.session['cus'])
         if len(user)>0:
             context['email']=request.session['email']
+            context['cus']=user[0]
             context['items']=Transaction.objects.filter(cus_id=request.session['cus'])
             return render(request,"all/customer-page.html",context=context)
     return redirect("/logincus")
@@ -494,16 +629,19 @@ def customerpage(request,):
 def transaction_details(request,t_id):
     context={}
     if 'cus' in request.session:
-        context['items']=Transaction.objects.filter(t_id=t_id)
-        if len(context['items'])<1 or str(request.session['cus'])!=str(context['items'][0].cus_id.cus_id):
+        context['items']={}
+        trx=Transaction.objects.filter(pk=t_id)
+        if len(trx)<1 or str(request.session['cus'])!=str(trx[0].cus_id.cus_id):
             return redirect('/logincus')
         else:
-            orders_data=Orders.objects.filter(t_id=t_id)
+            trx=trx[0]
+            orders_data=Orders.objects.filter(t_id=trx)
+            print(orders_data)
             context['items']={} 
             for item in orders_data:
-                temp_name=S_Products.objects.filter(p_id=item.p_id.p_id)
-                if len(temp_name)>0:
-                    context['items'][temp_name[0].p_name]=item.p_id.quantity
+                temp_name=item.p_id
+                print(temp_name)
+                context['items'][temp_name.p_name]=item.quantity
             print(context['items'])
             return render(request,"all/transaction_details.html",context=context)
     return redirect('/logincus')

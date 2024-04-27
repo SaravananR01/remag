@@ -22,11 +22,18 @@
         
         <div class="row">
             <table class="table table-info">
-                <tr><th>ITEM NAME</th></tr>
+                <tr><th>ITEM NAME</th><th>ITEM STOCK</th></tr>
                 {% for item in items %}
                 <tr>
                     <td>
                         {{item.p_name}}
+                    </td>
+                    <td>
+                        {% if item.quantity == 0 %}
+                            ITEM OUT OF STOCK
+                        {% else %}
+                            {{item.quantity}}
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
