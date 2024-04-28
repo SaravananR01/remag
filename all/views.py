@@ -326,6 +326,7 @@ def delete_warehouse(request,b_id,w_id):
 def add_emp(request):
     context = {}
     if 'company' in request.session:
+        context['email']=request.session['email']
         user = Company.objects.filter(c_id=request.session['company'])
         company_branches = Branch.objects.filter(company=request.session['company'])
         all_branches=[]
@@ -390,6 +391,7 @@ def add_emp(request):
 def edit_emp(request,emp_id):
     context = {}
     if 'company' in request.session:
+        context['email']=request.session['email']
         user = Company.objects.filter(c_id=request.session['company'])
         if user.exists():
                 company_branches = Branch.objects.filter(company=request.session['company'])
@@ -459,12 +461,6 @@ def add_warehouse(request,b_id):
         return redirect(f'/branch/{b_id}')
     return redirect('/')
 
-def edit_shop(request):
-    return render(request,"all/edit-shop.html",{})
-
-def edit_warehouse(request):
-    return render(request,"all/edit-warehouse.html",{})
-
 def emp_page(request):
     context={}
     if 'emp' in request.session:
@@ -492,9 +488,6 @@ def modify_stock_emp(request):
             context['warehouses']=Warehouse.objects.filter(branch=context['branch'])
             return render(request,"all/modify-stock-emp.html",context=context)
     return redirect("/loginemp")
-
-def modify_item_details(request):
-    return render(request,"all/modify_item_details.html",{})
 
 def modify_stock(request,b_id,id):
     context={}
@@ -584,10 +577,17 @@ def transaction(request):
                 context['items']={}
             if request.method == 'POST':
                 cus_id=request.POST['cus_id']
-                cus=Customers.objects.filter(cus_id=cus_id)
-                print(cus_id,cus)
+                cus_email=request.POST['cus_email']
+                cus_phno=request.POST['cus_phno']
+                cus=[]
+                if cus_id:
+                    cus=Customers.objects.filter(cus_id=cus_id)
+                elif cus_email:
+                    cus=Customers.objects.filter(cus_email=cus_email)
+                elif cus_phno:
+                    cus=Customers.objects.filter(cus_phone_no=cus_phno)
                 if len(cus)!=1:
-                    context['error']="Invalid customer id!"
+                    context['error']="Invalid customer details!"
                 else:
                     if 'trx_items' in request.session and len(context['items'])>0:
                         new_trx=Transaction.objects.create(
@@ -810,6 +810,7 @@ def source_items(request):
     context={}
     search_str=""
     if request.method == 'POST':
+        context['email']=request.session['email']
         search_str=request.POST.get('search_box')
         items=S_Products.objects.filter(p_name__iregex=search_str)
         context['items']=items
@@ -829,6 +830,7 @@ def customerpage(request):
 def transaction_details(request,t_id):
     context={}
     if 'cus' in request.session:
+        context['email']=request.session['email']
         context['items']={}
         trx=Transaction.objects.filter(pk=t_id)
         if len(trx)<1 or str(request.session['cus'])!=str(trx[0].cus_id.cus_id):
@@ -842,7 +844,6 @@ def transaction_details(request,t_id):
                 temp_name=item.p_id
                 print(temp_name)
                 context['items'][temp_name.p_name]=item.quantity
-            print(context['items'])
             return render(request,"all/transaction_details.html",context=context)
     return redirect('/logincus')
 

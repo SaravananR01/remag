@@ -5,6 +5,11 @@
 {% endblock %}
 
 {% block content %}
+    <style>
+        tr,table,td,th{
+            border:solid 2px white
+        }
+    </style>
     <div class="blur" style="filter: blur(10px);">
         <h4 class="my-3">Transaction</h4>
         <h4 class="my-3">{{t_id}}</h4>
@@ -53,10 +58,14 @@
             <input type="text" name="item-name">
             <button type="submit">Search</button>
         </form>
+            <button onclick="location.href = '/transaction';">Cancel</button>
             <table style="border:solid 1px white;">
-                <tr>
+                <trstyle="border:solid 1px white;">
                     <th style="padding:6px;"> Item Name</th>
-                    <th> Item Stock</th>
+                    <th style="padding:6px;"> Item Stock</th>
+                    <th style="padding:6px;"> Item Manufacturer</th>
+                    <th style="padding:6px;"> Mfg Date</th>
+                    <th style="padding:6px;"> Exp Date</th>
                     <th></th>
                 </tr>
                 {% for item in items %}
@@ -66,6 +75,15 @@
                         </td>
                         <td>
                             {{item.quantity}}
+                        </td>
+                        <td>
+                            {{item.p_manufacturer}}
+                        </td>
+                        <td>
+                            {{item.mfg_date}}
+                        </td>
+                        <td>
+                            {{item.expiry_date}}
                         </td>
                         <td>
                             <input type="text" id="qty-{{item.p_id}}" value="1">
