@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="shop-details">
-        <a href="javascript:history.go(-1)" class="btn btn-primary">Back</a>
+        <button onclick="location.href='/companypage';" class="btn btn-primary">Back</button>
         <form class="col-md-4 offset-md-4 mt-5 border p-3" method="post" action="/add-branch">
             {% csrf_token %}
             <h4 class="pb-3">Add a Branch</h4>

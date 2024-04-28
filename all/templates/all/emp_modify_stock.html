@@ -8,10 +8,10 @@
     <div class="container px-5">
         <div class="container p-2">
             <h3>ID: {{id}}</h3>
-            <button onclick="location.href='/branch/{{b_id}}';" class="btn btn-primary">Back</button>
+            <button onclick="location.href='/modify-stock-emp';" class="btn btn-primary">Back</button>
             <br>
             <br>
-            <button  class="btn btn-primary" onclick="location.href = '/add-item/{{b_id}}/{{id}}';">
+            <button  class="btn btn-primary" onclick="location.href = '/add-item-emp/{{b_id}}/{{id}}';">
                 ADD ITEM
             </button>
         </div>
@@ -29,7 +29,7 @@
                     <td class="col-8">{{item.p_name}}</td>
                     <td class="col-1 offset-9">{{item.quantity}}</td>
                     <td class="text-end">
-                        <button  class="btn btn-primary" onclick="location.href = '/delete-product/{{b_id}}/{{id}}/{{item.p_id}}';">DELETE</button>
+                        <button  class="btn btn-primary" onclick="location.href = '/delete-product-emp/{{b_id}}/{{id}}/{{item.p_id}}';">DELETE</button>
                         <!-- <button  class="btn btn-primary" onclick="location.href = '/modify-item-details';">MODIFY</button> -->
                     </td>
                 </tr>

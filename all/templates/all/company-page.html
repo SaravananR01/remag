@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <a href="javascript:history.go(-1)" class="btn btn-primary">Back</a>
+    <button onclick="location.href='/companypage';" class="btn btn-primary">Back</button>
     <h3>Company ID: {{company.c_id}}</h3>
     <h3>Company Name: {{company.c_name}}</h3>
     <h3>Branch Name: {{branch.b_id}}</h3>

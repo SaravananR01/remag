@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+    <button onclick="location.href='/emp-page';" class="btn btn-primary">Back</button>
     <h3>EMP_ID: {{emp.emp_id}}</h3>
     <h3>EMP_Name: {{emp.emp_name}}</h3>
     <h3>Branch_ID: {{branch.b_id}}</h3>
@@ -18,14 +19,14 @@
             <tr>
                 <td>{{store.s_id}}</td>
                 <td>Shop</td>
-                <td><button class="btn btn-primary" onclick="location.href = '/modify-stock/{{branch.b_id}}/{{store.s_id}}';">Modify Stock</button></td>
+                <td><button class="btn btn-primary" onclick="location.href = '/emp-modify-stock/{{branch.b_id}}/{{store.s_id}}';">Modify Stock</button></td>
             </tr>
         {% endfor %}
         {% for warehouse in warehouses %}
         <tr>
             <td>{{warehouse.w_id}}</td>
             <td>Warehouse</td>
-            <td><button class="btn btn-primary" onclick="location.href = '/modify-stock/{{branch.b_id}}/{{warehouse.w_id}}';">Modify Stock</button></td>
+            <td><button class="btn btn-primary" onclick="location.href = '/emp-modify-stock/{{branch.b_id}}/{{warehouse.w_id}}';">Modify Stock</button></td>
         </tr>
         {% endfor %}
     </table>
