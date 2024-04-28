@@ -1,7 +1,7 @@
 {% extends "all/base.html" %}
 
 {% block title %}
-    Home
+    Search
 {% endblock %}
 
 {% block content %}
@@ -22,11 +22,28 @@
         
         <div class="row">
             <table class="table table-info">
-                <tr><th>ITEM NAME</th><th>ITEM STOCK</th></tr>
+                <tr>
+                    <th>ITEM NAME</th>
+                    <th>ITEM Manufacturer</th>
+                    <th>Manufactured date</th>
+                    <th>Expiry date</th>
+                    <th>ITEM STOCK</th>
+                    <th>ITEM Company</th>
+                    <th>ITEM Location</th>
+                </tr>
                 {% for item in items %}
                 <tr>
                     <td>
                         {{item.p_name}}
+                    </td>
+                    <td>
+                        {{item.p_manufacturer}}
+                    </td>
+                    <td>
+                        {{item.mfg_date}}
+                    </td>
+                    <td>
+                        {{item.expiry_date}}
                     </td>
                     <td>
                         {% if item.quantity == 0 %}
@@ -34,6 +51,12 @@
                         {% else %}
                             {{item.quantity}}
                         {% endif %}
+                    </td>
+                    <td>
+                        {{item.s_id.branch.company.c_name}}
+                    </td>
+                    <td>
+                        {{item.s_id.branch.b_address}}
                     </td>
                 </tr>
                 {% endfor %}

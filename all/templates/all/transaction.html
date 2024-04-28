@@ -38,8 +38,13 @@
         <form method="POST">
             {% csrf_token %}
             <div class="col">
+                <label>Fill any one of these fields:</label><br>
                 <label class="form-label">Enter customer id-</label>
                 <input type="text" name="cus_id" class="form-control"></input>
+                <label class="form-label">Enter customer email-</label>
+                <input type="text" name="cus_email" class="form-control"></input>
+                <label class="form-label">Enter customer phone-</label>
+                <input type="text" name="cus_phno" class="form-control"></input>
                 <button type="submit" class="btn btn-primary btn-lg mb-2">Complete Transaction</button>
                 <div class="error text-danger">{{error}}</div>
             </div>
