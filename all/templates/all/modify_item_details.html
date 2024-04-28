@@ -14,7 +14,7 @@
                     <label class="m-1 form-label">Store ID</label>
                 </div>
                 <div class="col-9">
-                    <input class="m-1 form-control" type="text" id="s_id" readonly>
+                    <input class="m-1 form-control" type="text" id="s_id" value="{{id}}" readonly disabled>
                 </div>
             </div>
             <div class="row">
@@ -22,7 +22,7 @@
                     <label class="m-1 form-label">Product ID</label>
                 </div>
                 <div class="col-9">
-                    <input class="m-1 form-control" type="text" id="p_id" readonly>
+                    <input class="m-1 form-control" type="text" id="p_id" value="{{pid}}" readonly disabled>
                 </div>
             </div>
             <div class="row">
@@ -30,7 +30,7 @@
                     <label class="m-1 form-label">Product Name</label>
                 </div>
                 <div class="col-9">
-                    <input class="m-1 form-control" type="text" id="p_name">
+                    <input class="m-1 form-control" type="text" id="p_name" value="{{product.pname}}">
                 </div>
             </div>
             <div class="row">
@@ -38,7 +38,7 @@
                     <label class="m-1 form-label">Product Manufacturer</label>
                 </div>
                 <div class="col-9">
-                    <input class="m-1 form-control" type="text" id="p_manu">
+                    <input class="m-1 form-control" type="text" id="p_manu" name="" value="{{product.p_manufacturer}}">
                 </div>
             </div>
             <div class="row">
@@ -46,7 +46,7 @@
                     <label class="m-1 form-label">Price</label>
                 </div>
                 <div class="col-9">
-                    <input class="m-1 form-control" type="text" id="price">
+                    <input class="m-1 form-control" type="text" id="price" name="price" value="{{product.price}}">
                 </div>
             </div>
             <div class="row">
@@ -54,7 +54,7 @@
                     <label class="m-1 form-label">Manufactured Date</label>
                 </div>
                 <div class="col-9">
-                    <input class="m-1 form-control" type="text" id="m_date">
+                    <input class="m-1 form-control" type="date" id="m_date" name="m_date" value="{{product.mfg_date}}">
                 </div>
             </div>
             <div class="row">

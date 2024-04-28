@@ -31,7 +31,7 @@
             </table>
         </div>
     </div> -->
-    <a href="javascript:history.go(-1)" class="btn btn-primary">Back</a>
+    <button onclick="location.href='/modify-stock/{{b_id}}/{{id}}';" class="btn btn-primary">Back</button>
     <div class="container px-5 text-center">
         <h3 class="p-4">ITEM DETAILS</h3>
         <form class="row" method="post">
@@ -41,7 +41,7 @@
                     <label class="m-1 form-label">Store/Warehouse ID:</label>
                 </div>
                 <div class="col-9">
-                    <input class="m-1 form-control" type="text" id="s_id" name="s_id" value="{{id}}" disabled>
+                    <input class="m-1 form-control" type="text" id="s_id" name="s_id" value="{{id}}" readonly>
                 </div>
             </div>
             <div class="row">
@@ -49,7 +49,7 @@
                     <label class="m-1 form-label">Product ID</label>
                 </div>
                 <div class="col-9">
-                    <input class="m-1 form-control" type="text" id="p_id" name="s_id" value="{{p_id}}" disabled>
+                    <input class="m-1 form-control" type="text" id="p_id" name="p_id" value="{{p_id}}" readonly>
                 </div>
             </div>
             <div class="row">

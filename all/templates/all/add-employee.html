@@ -6,12 +6,12 @@
 
 {% block content %}
     <div class="shop-details">
-        <a href="javascript:history.go(-1)" class="btn btn-primary">Back</a>
+        <button onclick="location.href='/all-employees';" class="btn btn-primary">Back</button>
         <form class="col-md-4 offset-md-4 mt-5 border p-3" method="post">
             {% csrf_token %}
             <h4 class="pb-3">Add Employee Details</h4>
             <label for="emp-id" class="form-label">Emp ID:</label>
-            <input type="text" id="emp-id" name="emp-id"class="form-control" value="{{emp_id}}">
+            <input type="text" id="emp-id" name="emp-id"class="form-control" value="{{emp_id}}" readonly>
             <label for="b_id" class="form-label">Branch ID:</label>
             <select class="form-select" id="branch" name="branch">
                 <option selected>Select One of the Branch IDs</option>
